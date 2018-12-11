@@ -34,6 +34,19 @@ def cropImage(name):
 	colored = cv2.imread(name, 1)
 	untouched = cv2.imread(name, 1)
 
+	ret, labels, stats, centroids = cv2.connectedComponentsWithStats(erode, 8) 
+
+	i = 1
+	while(i<ret):
+		colored[stats[i][cv2.CC_STAT_TOP]:stats[i][cv2.CC_STAT_HEIGHT] + stats[i][cv2.CC_STAT_TOP],[stats[i][cv2.CC_STAT_LEFT]]] = [0,0,255] # left
+		colored[[stats[i][cv2.CC_STAT_TOP]], stats[i][cv2.CC_STAT_LEFT]:stats[i][cv2.CC_STAT_LEFT] + stats[i][cv2.CC_STAT_WIDTH]] = [0,0,255] # top
+		colored[stats[i][cv2.CC_STAT_TOP] + stats[i][cv2.CC_STAT_HEIGHT], stats[i][cv2.CC_STAT_LEFT] : stats[i][cv2.CC_STAT_LEFT] + stats[i][cv2.CC_STAT_WIDTH]] = [0,0,255]
+		colored[stats[i][cv2.CC_STAT_TOP] : stats[i][cv2.CC_STAT_TOP] + stats[i][cv2.CC_STAT_HEIGHT], stats[i][cv2.CC_STAT_LEFT] + stats[i][cv2.CC_STAT_WIDTH]] = [0,0,255]
+		i = i + 1
+
+#43 & 44 fuck up when pic is vertical
+	cv2.imshow("c", colored)
+	cv2.imshow("d", colored)
 	threshold = 180
 	edges = cv2.Canny(erode, threshold, 2*threshold, 3)
 	result, contours, hierarchy = cv2.findContours(edges, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
