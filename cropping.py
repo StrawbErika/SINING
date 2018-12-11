@@ -27,8 +27,6 @@ def dilation(dilation_size, src):
 def cropImage(name):
 	image = cv2.imread(name, 0)
 	width, height = image.shape[:2]
-	print(width)
-	print(height)
 
 	_, src = cv2.threshold(image, 170, 255, cv2.THRESH_BINARY_INV)
 	dilate = dilation(10,src)
@@ -54,10 +52,28 @@ def cropImage(name):
 	cropped = colored[coordinates[0]:coordinates[1], coordinates[2]:coordinates[3]]
 	return cropped
 	
+def cropSquareImage(croppedPainting):
+	width, height = croppedPainting.shape[:2]
+	if(width>height): 
+		size = height
+		biggerMid = round(width/2)
+	else: 
+		size = width
+		biggerMid = round(height/2)
 
+	middle = round(size/2)
+	square = croppedPainting[0:size, biggerMid-middle:biggerMid+middle]
+	width, height = square.shape[:2]
 
+	cv2.imwrite("square.jpg", square)
+	
+	#can be off by 1 px (the ratio)
+	#essentially current square = ... is assuming that the bigger is width, so need to be more dynamic to size
+
+painting = cropImage("try.jpg")
+cropSquareImage(painting)
 img_name = "output.jpg"
-cv2.imwrite(img_name,cropImage("try.jpg"))
+cv2.imwrite(img_name,painting)
 
 cv2.waitKey(0)
 cv2.destroyAllWindows()
