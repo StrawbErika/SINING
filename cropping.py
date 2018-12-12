@@ -26,17 +26,16 @@ def dilation(dilation_size, src):
 
 def cropImage(name):
 	image = cv2.imread(name, 0)
-	width, height = image.shape[:2]
-
+	w, h= image.shape
 	_, src = cv2.threshold(image, 170, 255, cv2.THRESH_BINARY_INV)
+
 	dilate = dilation(10,src)
-	erode = erosion(9,dilate)
+
 	colored = cv2.imread(name, 1)
 	untouched = cv2.imread(name, 1)
 
 	threshold = 180
-	edges = cv2.Canny(erode, threshold, 2*threshold, 3)
-	result, contours, hierarchy = cv2.findContours(edges, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
+	result, contours, hierarchy = cv2.findContours(dilate, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
 
 	maxArea = -1
 	for i in range(len(contours)):
@@ -44,36 +43,51 @@ def cropImage(name):
 			maxArea = cv2.contourArea(contours[i])
 			peri = cv2.arcLength(contours[i], True)
 			rect = cv2.approxPolyDP(contours[i], 0.0667 * peri, True)
-			if len(rect) == 4:
-				color = (255,255,255)
-				untouched = cv2.drawContours(untouched, [contours[i]], -1, color ,3)
+			color = (255,0,0)
+			untouched = cv2.drawContours(untouched, [contours[i]], -1, color ,3)
 
 	coordinates = findCoordinates(rect)
 	cropped = colored[coordinates[0]:coordinates[1], coordinates[2]:coordinates[3]]
 	return cropped
+
+def checkSize(width,height):
+	size = width
+	bigger = height
+	if(width > height):
+		size = height
+		bigger = width
+	return size, bigger
 	
 def cropSquareImage(croppedPainting):
-	width, height = croppedPainting.shape[:2]
-	if(width>height): 
-		size = height
-		biggerMid = round(width/2)
-	else: 
-		size = width
-		biggerMid = round(height/2)
-
+	w, h = croppedPainting.shape[:2]
+	size, bigger = checkSize(w,h)
+	biggerMid = round(bigger/2)
 	middle = round(size/2)
-	square = croppedPainting[0:size, biggerMid-middle:biggerMid+middle]
+	if(w > h):
+		square = croppedPainting[biggerMid-middle:biggerMid+middle, 0:size]
+	else:
+		square = croppedPainting[0:size, biggerMid-middle:biggerMid+middle]
 	width, height = square.shape[:2]
 
-	cv2.imwrite("square.jpg", square)
-	
-	#can be off by 1 px (the ratio)
-	#essentially current square = ... is assuming that the bigger is width, so need to be more dynamic to size
+	return square
 
-painting = cropImage("try.jpg")
-cropSquareImage(painting)
-img_name = "output.jpg"
-cv2.imwrite(img_name,painting)
+def rotate(image, degree):
+	num_rows, num_cols = image.shape[:2]
+
+	rotation_matrix = cv2.getRotationMatrix2D((num_cols/2, num_rows/2), degree, 1)
+	rotation = cv2.warpAffine(image, rotation_matrix, (num_cols, num_rows))
+	return rotation
+
+
+painting = cropImage("heightTry.jpg")
+square = cropSquareImage(painting)
+cv2.imwrite("counter.jpg", rotate(square, 90))
+cv2.imwrite("clock.jpg", rotate(square, -90))
+
+cv2.imwrite("square.jpg", square)
+cv2.imwrite("cropped.jpg",painting)
 
 cv2.waitKey(0)
 cv2.destroyAllWindows()
+
+
