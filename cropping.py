@@ -80,6 +80,8 @@ def rotate(image, degree):
 
 painting = cropImage("try.jpg")
 square = cropSquareImage(painting)
+square = cv2.resize(square, (250, 250)) 
+
 cv2.imwrite("vFlip.jpg", cv2.flip(square, 0))
 cv2.imwrite("hFlip.jpg", cv2.flip(square, 1))
 cv2.imwrite("counter.jpg", rotate(square, 90))
