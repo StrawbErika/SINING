@@ -28,6 +28,7 @@ def cropImage(name):
 	image = cv2.imread(name, 0)
 	w, h= image.shape
 	_, src = cv2.threshold(image, 170, 255, cv2.THRESH_BINARY_INV)
+
 	dilate = dilation(10,src)
 
 	colored = cv2.imread(name, 1)
@@ -68,10 +69,22 @@ def cropSquareImage(croppedPainting):
 		square = croppedPainting[0:size, biggerMid-middle:biggerMid+middle]
 	width, height = square.shape[:2]
 
-	cv2.imwrite("square.jpg", square)
+	return square
 
-painting = cropImage("try.jpg")
-cropSquareImage(painting)
+def rotate(image, degree):
+	num_rows, num_cols = image.shape[:2]
+
+	rotation_matrix = cv2.getRotationMatrix2D((num_cols/2, num_rows/2), degree, 1)
+	rotation = cv2.warpAffine(image, rotation_matrix, (num_cols, num_rows))
+	return rotation
+
+
+painting = cropImage("heightTry.jpg")
+square = cropSquareImage(painting)
+cv2.imwrite("counter.jpg", rotate(square, 90))
+cv2.imwrite("clock.jpg", rotate(square, -90))
+
+cv2.imwrite("square.jpg", square)
 cv2.imwrite("cropped.jpg",painting)
 
 cv2.waitKey(0)
