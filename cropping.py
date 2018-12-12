@@ -78,12 +78,12 @@ def rotate(image, degree):
 	rotation = cv2.warpAffine(image, rotation_matrix, (num_cols, num_rows))
 	return rotation
 
-
-painting = cropImage("heightTry.jpg")
+painting = cropImage("try.jpg")
 square = cropSquareImage(painting)
+cv2.imwrite("vFlip.jpg", cv2.flip(square, 0))
+cv2.imwrite("hFlip.jpg", cv2.flip(square, 1))
 cv2.imwrite("counter.jpg", rotate(square, 90))
 cv2.imwrite("clock.jpg", rotate(square, -90))
-
 cv2.imwrite("square.jpg", square)
 cv2.imwrite("cropped.jpg",painting)
 
