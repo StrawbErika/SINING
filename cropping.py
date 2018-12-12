@@ -29,9 +29,7 @@ def cropImage(name):
 	w, h= image.shape
 	_, src = cv2.threshold(image, 170, 255, cv2.THRESH_BINARY_INV)
 	dilate = dilation(10,src)
-	cv2.imwrite("edges.jpg", dilate)
 
-	# erode = erosion(10,dilate)
 	colored = cv2.imread(name, 1)
 	untouched = cv2.imread(name, 1)
 
@@ -46,36 +44,35 @@ def cropImage(name):
 			rect = cv2.approxPolyDP(contours[i], 0.0667 * peri, True)
 			color = (255,0,0)
 			untouched = cv2.drawContours(untouched, [contours[i]], -1, color ,3)
-	cv2.imwrite("colored.jpg", untouched)
 
 	coordinates = findCoordinates(rect)
 	cropped = colored[coordinates[0]:coordinates[1], coordinates[2]:coordinates[3]]
 	return cropped
-	
-def check(height, width, coords):
-	checked = coords
-	if(coords == height or coords == width):
-		checked = coords - 1
-	return checked
-def cropSquareImage(croppedPainting):
-	width, height = croppedPainting.shape[:2]
-	if(width>height): 
-		size = height
-		biggerMid = round(width/2)
-	else: 
-		size = width
-		biggerMid = round(height/2)
 
+def checkSize(width,height):
+	size = width
+	bigger = height
+	if(width > height):
+		size = height
+		bigger = width
+	return size, bigger
+	
+def cropSquareImage(croppedPainting):
+	w, h = croppedPainting.shape[:2]
+	size, bigger = checkSize(w,h)
+	biggerMid = round(bigger/2)
 	middle = round(size/2)
-	square = croppedPainting[0:size, biggerMid-middle:biggerMid+middle]
+	if(w > h):
+		square = croppedPainting[biggerMid-middle:biggerMid+middle, 0:size]
+	else:
+		square = croppedPainting[0:size, biggerMid-middle:biggerMid+middle]
 	width, height = square.shape[:2]
 
 	cv2.imwrite("square.jpg", square)
 
 painting = cropImage("try.jpg")
 cropSquareImage(painting)
-img_name = "output.jpg"
-cv2.imwrite(img_name,painting)
+cv2.imwrite("cropped.jpg",painting)
 
 cv2.waitKey(0)
 cv2.destroyAllWindows()
