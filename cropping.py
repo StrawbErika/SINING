@@ -26,30 +26,17 @@ def dilation(dilation_size, src):
 
 def cropImage(name):
 	image = cv2.imread(name, 0)
-	width, height = image.shape[:2]
-
+	w, h= image.shape
 	_, src = cv2.threshold(image, 170, 255, cv2.THRESH_BINARY_INV)
 	dilate = dilation(10,src)
-	erode = erosion(9,dilate)
+	cv2.imwrite("edges.jpg", dilate)
+
+	# erode = erosion(10,dilate)
 	colored = cv2.imread(name, 1)
 	untouched = cv2.imread(name, 1)
 
-	ret, labels, stats, centroids = cv2.connectedComponentsWithStats(erode, 8) 
-
-	i = 1
-	while(i<ret):
-		colored[stats[i][cv2.CC_STAT_TOP]:stats[i][cv2.CC_STAT_HEIGHT] + stats[i][cv2.CC_STAT_TOP],[stats[i][cv2.CC_STAT_LEFT]]] = [0,0,255] # left
-		colored[[stats[i][cv2.CC_STAT_TOP]], stats[i][cv2.CC_STAT_LEFT]:stats[i][cv2.CC_STAT_LEFT] + stats[i][cv2.CC_STAT_WIDTH]] = [0,0,255] # top
-		colored[stats[i][cv2.CC_STAT_TOP] + stats[i][cv2.CC_STAT_HEIGHT], stats[i][cv2.CC_STAT_LEFT] : stats[i][cv2.CC_STAT_LEFT] + stats[i][cv2.CC_STAT_WIDTH]] = [0,0,255]
-		colored[stats[i][cv2.CC_STAT_TOP] : stats[i][cv2.CC_STAT_TOP] + stats[i][cv2.CC_STAT_HEIGHT], stats[i][cv2.CC_STAT_LEFT] + stats[i][cv2.CC_STAT_WIDTH]] = [0,0,255]
-		i = i + 1
-
-#43 & 44 fuck up when pic is vertical
-	cv2.imshow("c", colored)
-	cv2.imshow("d", colored)
 	threshold = 180
-	edges = cv2.Canny(erode, threshold, 2*threshold, 3)
-	result, contours, hierarchy = cv2.findContours(edges, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
+	result, contours, hierarchy = cv2.findContours(dilate, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
 
 	maxArea = -1
 	for i in range(len(contours)):
@@ -57,14 +44,19 @@ def cropImage(name):
 			maxArea = cv2.contourArea(contours[i])
 			peri = cv2.arcLength(contours[i], True)
 			rect = cv2.approxPolyDP(contours[i], 0.0667 * peri, True)
-			if len(rect) == 4:
-				color = (255,255,255)
-				untouched = cv2.drawContours(untouched, [contours[i]], -1, color ,3)
+			color = (255,0,0)
+			untouched = cv2.drawContours(untouched, [contours[i]], -1, color ,3)
+	cv2.imwrite("colored.jpg", untouched)
 
 	coordinates = findCoordinates(rect)
 	cropped = colored[coordinates[0]:coordinates[1], coordinates[2]:coordinates[3]]
 	return cropped
 	
+def check(height, width, coords):
+	checked = coords
+	if(coords == height or coords == width):
+		checked = coords - 1
+	return checked
 def cropSquareImage(croppedPainting):
 	width, height = croppedPainting.shape[:2]
 	if(width>height): 
@@ -79,9 +71,6 @@ def cropSquareImage(croppedPainting):
 	width, height = square.shape[:2]
 
 	cv2.imwrite("square.jpg", square)
-	
-	#can be off by 1 px (the ratio)
-	#essentially current square = ... is assuming that the bigger is width, so need to be more dynamic to size
 
 painting = cropImage("try.jpg")
 cropSquareImage(painting)
@@ -90,3 +79,5 @@ cv2.imwrite(img_name,painting)
 
 cv2.waitKey(0)
 cv2.destroyAllWindows()
+
+
