@@ -22,6 +22,8 @@ export default class HomeScreen extends React.Component {
       <View style={styles.container}>
         <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
           <View style={styles.welcomeContainer}>
+
+            {/* noted for logo */}
             <Image
               source={
                 __DEV__
@@ -33,9 +35,10 @@ export default class HomeScreen extends React.Component {
           </View>
 
           <View style={styles.getStartedContainer}>
-            {this._maybeRenderDevelopmentModeWarning()}
-            <Text> change pls</Text>
+            {/* {this._maybeRenderDevelopmentModeWarning()} */}
             <Text style={styles.getStartedText}>BLEP!</Text>
+            {/* text */}
+
 
             <View style={[styles.codeHighlightContainer, styles.homeScreenFilename]}>
               <MonoText style={styles.codeHighlightText}>screens/HomeScreen.js</MonoText>
@@ -53,6 +56,7 @@ export default class HomeScreen extends React.Component {
           </View>
         </ScrollView>
 
+        {/* tab */}
         <View style={styles.tabBarInfoContainer}>
           <Text style={styles.tabBarInfoText}>I don't really do much</Text>
 
@@ -64,6 +68,7 @@ export default class HomeScreen extends React.Component {
     );
   }
 
+  //noted for if need dynamic screen
   _maybeRenderDevelopmentModeWarning() {
     if (__DEV__) {
       const learnMoreButton = (
@@ -87,15 +92,11 @@ export default class HomeScreen extends React.Component {
     }
   }
 
+  //Noted for Wikipedia entries
   _handleLearnMorePress = () => {
     WebBrowser.openBrowserAsync('https://docs.expo.io/versions/latest/guides/development-mode');
   };
 
-  _handleHelpPress = () => {
-    WebBrowser.openBrowserAsync(
-      'https://docs.expo.io/versions/latest/guides/up-and-running.html#can-t-see-your-changes'
-    );
-  };
 }
 
 const styles = StyleSheet.create({
