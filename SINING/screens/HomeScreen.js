@@ -1,4 +1,7 @@
+import { Button } from 'react-native-elements';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import React from 'react';
+// import BadInstagramCloneApp from './BadInstagramCloneApp';
 import {
   Image,
   Platform,
@@ -21,82 +24,64 @@ export default class HomeScreen extends React.Component {
     return (
       <View style={styles.container}>
         <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-          <View style={styles.welcomeContainer}>
 
-            {/* noted for logo */}
-            <Image
-              source={
-                __DEV__
-                  ? require('../assets/images/robot-dev.png')
-                  : require('../assets/images/robot-prod.png')
-              }
-              style={styles.welcomeImage}
-            />
-          </View>
 
           <View style={styles.getStartedContainer}>
-            {/* {this._maybeRenderDevelopmentModeWarning()} */}
-            <Text style={styles.getStartedText}>BLEP!</Text>
-            {/* text */}
-
-
-            <View style={[styles.codeHighlightContainer, styles.homeScreenFilename]}>
-              <MonoText style={styles.codeHighlightText}>screens/HomeScreen.js</MonoText>
-            </View>
-
             <Text style={styles.getStartedText}>
               Sining!
             </Text>
           </View>
+          {/* <BadInstagramCloneApp /> */}
 
-          <View style={styles.helpContainer}>
-            <TouchableOpacity onPress={this._handleHelpPress} style={styles.helpLink}>
-              <Text> Hello!</Text>
-            </TouchableOpacity>
+          <View style={styles.getStartedContainerButtons}>
+            <Button
+              buttonStyle={{
+                backgroundColor: "rgba(92, 99,216, 1)",
+                width: 250,
+                height: 45,
+                borderColor: "transparent",
+                borderWidth: 0,
+                borderRadius: 5
+              }}
+              containerStyle={{ marginTop: 30 }}
+              icon={
+                <Icon
+                  name='arrow-right'
+                  size={15}
+                  color='white'
+                />
+              }
+              title='Camera'
+            /
+            >
+
+            <Button
+              buttonStyle={{
+                backgroundColor: "rgba(92, 99,216, 1)",
+                width: 250,
+                height: 45,
+                borderColor: "transparent",
+                borderWidth: 0,
+                borderRadius: 5
+              }}
+              containerStyle={{ marginTop: 10 }}
+              icon={
+                <Icon
+                  name='arrow-right'
+                  size={15}
+                  color='white'
+                />
+              }
+              title='Gallery'
+            />
+
           </View>
+
         </ScrollView>
 
-        {/* tab */}
-        <View style={styles.tabBarInfoContainer}>
-          <Text style={styles.tabBarInfoText}>I don't really do much</Text>
-
-          <View style={[styles.codeHighlightContainer, styles.navigationFilename]}>
-            <MonoText style={styles.codeHighlightText}>navigation/MainTabNavigator.js</MonoText>
-          </View>
-        </View>
       </View>
     );
   }
-
-  //noted for if need dynamic screen
-  _maybeRenderDevelopmentModeWarning() {
-    if (__DEV__) {
-      const learnMoreButton = (
-        <Text onPress={this._handleLearnMorePress} style={styles.helpLinkText}>
-          Learn more
-        </Text>
-      );
-
-      return (
-        <Text style={styles.developmentModeText}>
-          Development mode is enabled, your app will be slower but you can use useful development
-          tools. {learnMoreButton}
-        </Text>
-      );
-    } else {
-      return (
-        <Text style={styles.developmentModeText}>
-          You are not in development mode, your app will run at full speed.
-        </Text>
-      );
-    }
-  }
-
-  //Noted for Wikipedia entries
-  _handleLearnMorePress = () => {
-    WebBrowser.openBrowserAsync('https://docs.expo.io/versions/latest/guides/development-mode');
-  };
-
 }
 
 const styles = StyleSheet.create({
@@ -104,6 +89,22 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
   },
+  getStartedContainer: {
+    alignItems: 'center',
+    marginHorizontal: 50,
+    marginTop: 150,
+    backgroundColor: '#fff',
+  },
+  getStartedContainerButtons: {
+    alignItems: 'center',
+  },
+  getStartedText: {
+    fontSize: 50,
+    color: 'rgba(96,100,109, 1)',
+    lineHeight: 50,
+    textAlign: 'center',
+  },
+
   developmentModeText: {
     marginBottom: 20,
     color: 'rgba(0,0,0,0.4)',
@@ -126,10 +127,6 @@ const styles = StyleSheet.create({
     marginTop: 3,
     marginLeft: -10,
   },
-  getStartedContainer: {
-    alignItems: 'center',
-    marginHorizontal: 50,
-  },
   homeScreenFilename: {
     marginVertical: 7,
   },
@@ -140,12 +137,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0,0,0,0.05)',
     borderRadius: 3,
     paddingHorizontal: 4,
-  },
-  getStartedText: {
-    fontSize: 17,
-    color: 'rgba(96,100,109, 1)',
-    lineHeight: 24,
-    textAlign: 'center',
   },
   tabBarInfoContainer: {
     position: 'absolute',
