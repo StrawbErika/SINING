@@ -1,10 +1,7 @@
 import React from 'react';
-import { Button } from 'react-native-elements';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import {
     ProgressBarAndroid,
     Image,
-    Platform,
     ScrollView,
     StyleSheet,
     Text,
@@ -16,36 +13,79 @@ export default class ClassifiedScreen extends React.Component {
     static navigationOptions = {
         header: null,
     };
+    constructor() {
+        super()
+
+        this.state = {
+            majorArtist: ["Juan Luna", 0.5],
+            artist: [["Fernando Amorsolo", 0.3], ["Carlos Francisco", 0.15], ["Benedicto Cabrera", 0.05],]
+        }
+    }
 
     render() {
         return (
             <View style={styles.container}>
                 <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
                     <View style={styles.majorArtistContainer}>
-                        <Image
-                            source={require('../assets/images/jl.png')}
+                        {/* <Image
+                            source={require('../assets/images/' + this.state.majorArtist[0] + '.png')}
                             style={styles.majorArtistImage}
-                        />
+                        /> */}
                         <TouchableOpacity style={styles.helpLink}>
-                            <Text style={styles.helpLinkText}> Juan Luna</Text>
+                            <Text style={styles.helpLinkText}> {this.state.majorArtist[0]}</Text>
                         </TouchableOpacity>
                         <View style={styles.majorProgressContainer}>
                             <View>
                                 <ProgressBarAndroid
                                     styleAttr="Horizontal"
                                     indeterminate={false}
-                                    progress={0.5}
+                                    progress={this.state.majorArtist[1]}
                                     color="#000"
                                     style={styles.majorProgressBar}
                                 />
                             </View>
                             <View >
-                                <Text> 50% </Text>
+                                <Text> {this.state.majorArtist[1] * 100}% </Text>
                             </View>
                         </View>
                     </View>
                     <View style={styles.minorArtistContainer}>
-                        <View style={styles.minorArtists}>
+                        {
+                            this.state.artist.map((artistList, index) => {
+                                return (
+                                    <View style={styles.minorArtists}>
+                                        {/* <Image
+                                            source={require('../assets/images/' + artistList[0] + '.png')}
+                                            style={styles.minorArtistImage}
+                                        /> */}
+
+                                        <View style={styles.artistsProgressContainer}>
+                                            <View style={styles.artistName}>
+                                                <Text> {artistList[0]} </Text>
+                                            </View>
+
+                                            <View style={styles.minorProgressContainer}>
+                                                <View>
+                                                    <ProgressBarAndroid
+                                                        styleAttr="Horizontal"
+                                                        indeterminate={false}
+                                                        progress={artistList[1]}
+                                                        color="#000"
+                                                        style={styles.minorProgressBar}
+                                                    />
+                                                </View>
+                                                <View >
+                                                    <Text> {artistList[1] * 100}% </Text>
+                                                </View>
+                                            </View>
+
+                                        </View>
+                                    </View>
+
+                                )
+                            })
+                        }
+                        {/* <View style={styles.minorArtists}>
                             <Image
                                 source={require('../assets/images/jl.png')}
                                 style={styles.minorArtistImage}
@@ -61,13 +101,13 @@ export default class ClassifiedScreen extends React.Component {
                                         <ProgressBarAndroid
                                             styleAttr="Horizontal"
                                             indeterminate={false}
-                                            progress={0.1}
+                                            progress={0.2}
                                             color="#000"
                                             style={styles.minorProgressBar}
                                         />
                                     </View>
                                     <View >
-                                        <Text> 10% </Text>
+                                        <Text> 20% </Text>
                                     </View>
                                 </View>
 
@@ -101,36 +141,7 @@ export default class ClassifiedScreen extends React.Component {
                                 </View>
 
                             </View>
-                        </View>
-
-                        <View style={styles.minorArtists}>
-                            <Image
-                                source={require('../assets/images/jl.png')}
-                                style={styles.minorArtistImage}
-                            />
-
-                            <View style={styles.artistsProgressContainer}>
-                                <View style={styles.artistName}>
-                                    <Text> Fernando Amorsolo </Text>
-                                </View>
-
-                                <View style={styles.minorProgressContainer}>
-                                    <View>
-                                        <ProgressBarAndroid
-                                            styleAttr="Horizontal"
-                                            indeterminate={false}
-                                            progress={0.2}
-                                            color="#000"
-                                            style={styles.minorProgressBar}
-                                        />
-                                    </View>
-                                    <View >
-                                        <Text> 20% </Text>
-                                    </View>
-                                </View>
-
-                            </View>
-                        </View>
+                        </View> */}
                     </View>
 
                 </ScrollView>
