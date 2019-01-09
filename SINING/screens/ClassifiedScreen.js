@@ -9,7 +9,8 @@ import {
     View,
     Linking,
 } from 'react-native';
-const allArtists = [["Juan Luna", 0.5], ["Fernando Amorsolo", 0.3], ["Carlos Francisco", 0.15], ["Benedicto Cabrera", 0.05]];
+// JL: 1, FA: 2, CF: 3, BC: 4
+const allArtists = [["Juan Luna", 0.5, require("../assets/images/Juan_Luna.png")], ["Fernando Amorsolo", 0.3, require("../assets/images/Fernando_Amorsolo.png")], ["Carlos Francisco", 0.15, require("../assets/images/Carlos_Francisco.png")], ["Benedicto Cabrera", 0.05, require("../assets/images/Benedicto_Cabrera.png")]];
 export default class ClassifiedScreen extends React.Component {
     static navigationOptions = {
         header: null,
@@ -29,10 +30,10 @@ export default class ClassifiedScreen extends React.Component {
                 <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
                     <Text> FEIGHTERoo</Text>
                     <View style={styles.majorArtistContainer}>
-                        {/* <Image
-                            source={require(this.state.majorArtist[2])}
+                        <Image
+                            source={this.state.majorArtist[2]}
                             style={styles.majorArtistImage}
-                        /> */}
+                        />
 
                         <TouchableOpacity style={styles.helpLink} value={this.state.majorArtist} onPress={this._handleMajorArtistPress}>
                             <Text style={styles.helpLinkText}> {this.state.majorArtist[0]}</Text>
@@ -57,10 +58,10 @@ export default class ClassifiedScreen extends React.Component {
                             this.state.artist.map((artistList, index) => {
                                 return (
                                     <View style={styles.minorArtists} key={index}>
-                                        {/* <Image
-                                            source={require(artistList[2])}
+                                        <Image
+                                            source={artistList[2]}
                                             style={styles.minorArtistImage}
-                                        /> */}
+                                        />
 
                                         <View style={styles.artistsProgressContainer}>
                                             <View style={styles.artistName}>
