@@ -9,7 +9,7 @@ import {
     View,
     Linking,
 } from 'react-native';
-
+const allArtists = [["Juan Luna", 0.5], ["Fernando Amorsolo", 0.3], ["Carlos Francisco", 0.15], ["Benedicto Cabrera", 0.05]];
 export default class ClassifiedScreen extends React.Component {
     static navigationOptions = {
         header: null,
@@ -18,8 +18,8 @@ export default class ClassifiedScreen extends React.Component {
         super()
 
         this.state = {
-            majorArtist: ["Juan Luna", 0.5, '../assets/images/Juan_Luna.png'],
-            artist: [["Fernando Amorsolo", 0.3, '../assets/images/Fernando_Amorsolo'], ["Carlos Francisco", 0.15, '../assets/images/Carlos_Francisco'], ["Benedicto Cabrera", 0.05, '../assets/images/Benedicto_Cabrera']]
+            majorArtist: allArtists[0],
+            artist: allArtists.slice(1)
         }
     }
 
