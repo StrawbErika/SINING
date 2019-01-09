@@ -1,6 +1,9 @@
 import React from 'react';
 import { Platform, StatusBar, StyleSheet, View } from 'react-native';
-import { AppLoading, Asset, Font, Icon } from 'expo';
+import { AppLoading, Asset, Font, Icon } from 'expo'; // to make it work on EXPO, this needed
+// import { Icon } from 'react-native-elements'
+// import { AppLoading } from 'react-native-splash-screen'
+
 import AppNavigator from './navigation/AppNavigator';
 
 export default class App extends React.Component {

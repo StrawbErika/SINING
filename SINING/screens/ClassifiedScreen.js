@@ -7,6 +7,7 @@ import {
     Text,
     TouchableOpacity,
     View,
+    Linking,
 } from 'react-native';
 
 export default class ClassifiedScreen extends React.Component {
@@ -17,8 +18,8 @@ export default class ClassifiedScreen extends React.Component {
         super()
 
         this.state = {
-            majorArtist: ["Juan Luna", 0.5],
-            artist: [["Fernando Amorsolo", 0.3], ["Carlos Francisco", 0.15], ["Benedicto Cabrera", 0.05],]
+            majorArtist: ["Juan Luna", 0.5, '../assets/images/Juan_Luna.png'],
+            artist: [["Fernando Amorsolo", 0.3, '../assets/images/Fernando_Amorsolo'], ["Carlos Francisco", 0.15, '../assets/images/Carlos_Francisco'], ["Benedicto Cabrera", 0.05, '../assets/images/Benedicto_Cabrera']]
         }
     }
 
@@ -26,12 +27,14 @@ export default class ClassifiedScreen extends React.Component {
         return (
             <View style={styles.container}>
                 <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
+                    <Text> FEIGHTERoo</Text>
                     <View style={styles.majorArtistContainer}>
                         {/* <Image
-                            source={require('../assets/images/' + this.state.majorArtist[0] + '.png')}
+                            source={require(this.state.majorArtist[2])}
                             style={styles.majorArtistImage}
                         /> */}
-                        <TouchableOpacity style={styles.helpLink}>
+
+                        <TouchableOpacity style={styles.helpLink} value={this.state.majorArtist} onPress={this._handleMajorArtistPress}>
                             <Text style={styles.helpLinkText}> {this.state.majorArtist[0]}</Text>
                         </TouchableOpacity>
                         <View style={styles.majorProgressContainer}>
@@ -53,9 +56,9 @@ export default class ClassifiedScreen extends React.Component {
                         {
                             this.state.artist.map((artistList, index) => {
                                 return (
-                                    <View style={styles.minorArtists}>
+                                    <View style={styles.minorArtists} key={index}>
                                         {/* <Image
-                                            source={require('../assets/images/' + artistList[0] + '.png')}
+                                            source={require(artistList[2])}
                                             style={styles.minorArtistImage}
                                         /> */}
 
@@ -85,63 +88,6 @@ export default class ClassifiedScreen extends React.Component {
                                 )
                             })
                         }
-                        {/* <View style={styles.minorArtists}>
-                            <Image
-                                source={require('../assets/images/jl.png')}
-                                style={styles.minorArtistImage}
-                            />
-
-                            <View style={styles.artistsProgressContainer}>
-                                <View style={styles.artistName}>
-                                    <Text> Fernando Amorsolo </Text>
-                                </View>
-
-                                <View style={styles.minorProgressContainer}>
-                                    <View>
-                                        <ProgressBarAndroid
-                                            styleAttr="Horizontal"
-                                            indeterminate={false}
-                                            progress={0.2}
-                                            color="#000"
-                                            style={styles.minorProgressBar}
-                                        />
-                                    </View>
-                                    <View >
-                                        <Text> 20% </Text>
-                                    </View>
-                                </View>
-
-                            </View>
-                        </View>
-
-                        <View style={styles.minorArtists}>
-                            <Image
-                                source={require('../assets/images/jl.png')}
-                                style={styles.minorArtistImage}
-                            />
-
-                            <View style={styles.artistsProgressContainer}>
-                                <View style={styles.artistName}>
-                                    <Text> Fernando Amorsolo </Text>
-                                </View>
-
-                                <View style={styles.minorProgressContainer}>
-                                    <View>
-                                        <ProgressBarAndroid
-                                            styleAttr="Horizontal"
-                                            indeterminate={false}
-                                            progress={0.2}
-                                            color="#000"
-                                            style={styles.minorProgressBar}
-                                        />
-                                    </View>
-                                    <View >
-                                        <Text> 20% </Text>
-                                    </View>
-                                </View>
-
-                            </View>
-                        </View> */}
                     </View>
 
                 </ScrollView>
@@ -149,6 +95,13 @@ export default class ClassifiedScreen extends React.Component {
         );
     }
 }
+_handleMajorArtistPress = (e) => {
+    Linking.openURL('https://google.com')
+    // console.log("HEY")
+    // WebBrowser.openBrowserAsync(
+    //     'https://en.wikipedia.org/wiki/Juan_Luna'
+    // );
+};
 
 const styles = StyleSheet.create({
     container: {

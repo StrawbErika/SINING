@@ -1,5 +1,6 @@
 import React from 'react';
-import { Icon } from 'expo';
+import { Icon } from 'expo'; //to make work on EXPO, this needed
+// import { Icon } from 'react-native-elements'
 
 import Colors from '../constants/Colors';
 
