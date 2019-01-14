@@ -1,201 +1,188 @@
-import { Button } from 'react-native-elements';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import React from 'react';
 import {
+  ProgressBarAndroid,
   Image,
-  Platform,
   ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
-  CameraRoll,
-  PermissionsAndroid
+  Linking,
 } from 'react-native';
-
-export default class HomeScreen extends React.Component {
+// JL: 1, FA: 2, CF: 3, BC: 4
+const allArtists = [["Juan Luna", 0.5, require("./assets/images/Juan_Luna.png")], ["Fernando Amorsolo", 0.3, require("./assets/images/Fernando_Amorsolo.png")], ["Carlos Francisco", 0.15, require("./assets/images/Carlos_Francisco.png")], ["Benedicto Cabrera", 0.05, require("./assets/images/Benedicto_Cabrera.png")]];
+export default class ClassifiedScreen extends React.Component {
   static navigationOptions = {
     header: null,
   };
-  state = {
-    photos: []
+  constructor() {
+    super()
+
+    this.state = {
+      majorArtist: allArtists[0],
+      artist: allArtists.slice(1)
+    }
   }
+
   render() {
     return (
       <View style={styles.container}>
         <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-          <View style={styles.getStartedContainer}>
-            <Text style={styles.getStartedText}>
-              Sining!
-            </Text>
-          </View>
-          {/* <BadInstagramCloneApp /> */}
-
-          <View style={styles.getStartedContainerButtons}>
-            <Button
-              buttonStyle={{
-                backgroundColor: "rgba(92, 99,216, 1)",
-                width: 250,
-                height: 45,
-                borderColor: "transparent",
-                borderWidth: 0,
-                borderRadius: 5
-              }}
-              containerStyle={{ marginTop: 30 }}
-              icon={
-                <Icon
-                  name='arrow-right'
-                  size={15}
-                  color='white'
-                />
-              }
-              title='Camera'
-            /
-            >
-
-            <Button
-              buttonStyle={{
-                backgroundColor: "rgba(92, 99,216, 1)",
-                width: 250,
-                height: 45,
-                borderColor: "transparent",
-                borderWidth: 0,
-                borderRadius: 5
-              }}
-              containerStyle={{ marginTop: 10 }}
-              icon={
-                <Icon
-                  name='arrow-right'
-                  size={15}
-                  color='white'
-                />
-              }
-              onPress={this._handleButtonPress}
-              title='Gallery'
+          <View style={styles.majorArtistContainer}>
+            <Image
+              source={this.state.majorArtist[2]}
+              style={styles.majorArtistImage}
             />
-            <ScrollView>
-              {this.state.photos.map((p, i) => {
-                return (
-                  <Image
-                    key={i}
-                    style={{
-                      width: 300,
-                      height: 100,
-                    }}
-                    source={{ uri: p.node.image.uri }}
-                  />
-                );
-              })}
-            </ScrollView>
 
+            <TouchableOpacity style={styles.helpLink} value={this.state.majorArtist} onPress={this._handleMajorArtistPress}>
+              <Text style={styles.helpLinkText}> {this.state.majorArtist[0]}</Text>
+            </TouchableOpacity>
+            <View style={styles.majorProgressContainer}>
+              <View>
+                <ProgressBarAndroid
+                  styleAttr="Horizontal"
+                  indeterminate={false}
+                  progress={this.state.majorArtist[1]}
+                  color="#000"
+                  style={styles.majorProgressBar}
+                />
+              </View>
+              <View >
+                <Text> {this.state.majorArtist[1] * 100}% </Text>
+              </View>
+            </View>
+          </View>
+          <View style={styles.minorArtistContainer}>
+            {
+              this.state.artist.map((artistList, index) => {
+                return (
+                  <View style={styles.minorArtists} key={index}>
+                    <Image
+                      source={artistList[2]}
+                      style={styles.minorArtistImage}
+                    />
+
+                    <View style={styles.artistsProgressContainer}>
+                      <View style={styles.artistName}>
+                        <Text> {artistList[0]} </Text>
+                      </View>
+
+                      <View style={styles.minorProgressContainer}>
+                        <View>
+                          <ProgressBarAndroid
+                            styleAttr="Horizontal"
+                            indeterminate={false}
+                            progress={artistList[1]}
+                            color="#000"
+                            style={styles.minorProgressBar}
+                          />
+                        </View>
+                        <View >
+                          <Text> {artistList[1] * 100}% </Text>
+                        </View>
+                      </View>
+
+                    </View>
+                  </View>
+
+                )
+              })
+            }
           </View>
 
         </ScrollView>
-
-      </View>
+      </View >
     );
   }
-
-  _handleButtonPress = async () => {
-    console.log('hey')
-    try {
-      console.log('heyy')
-
-      const granted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
-        {
-          'title': 'Photos Permission',
-          'message': 'Cool Photo App needs access to your camera so you can take awesome pictures.'
-        }
-      )
-
-      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-        alert("You can use the camera")
-        CameraRoll.getPhotos({
-          first: 20,
-          assetType: 'Photos',
-        })
-          .then(r => {
-            this.setState({ photos: r.edges });
-            console.log('somethin')
-          })
-          .catch((err) => {
-            console.log("noop")
-            console.log(err)
-            //Error Loading Images
-          });
-      } else {
-        alert("Camera permission denied")
-      }
-    } catch (err) {
-      console.warn(err)
-    }
-
-
-
-
-  };
-
-
 }
+_handleMajorArtistPress = (e) => {
+  Linking.openURL('https://google.com')
+  // console.log("HEY")
+  // WebBrowser.openBrowserAsync(
+  //     'https://en.wikipedia.org/wiki/Juan_Luna'
+  // );
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
   },
-  getStartedContainer: {
+  majorArtistContainer: {
     alignItems: 'center',
-    marginHorizontal: 50,
-    marginTop: 150,
-    backgroundColor: '#fff',
+    marginTop: 30,
+    marginBottom: 10,
+    // backgroundColor: '#ff0',
   },
-  getStartedContainerButtons: {
+  majorArtistImage: {
+    width: 150,
+    height: 150,
+    resizeMode: 'contain',
+    marginTop: 3,
+    marginLeft: -10,
+  },
+  helpLink: {
+    marginVertical: 5,
+  },
+  helpLinkText: {
+    fontSize: 20,
+  },
+  majorProgressContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    width: 330
+  },
+  majorProgressBar: {
+    paddingBottom: 0,
+    transform: [{ scaleY: 3.2 }],
+    height: 7,
+    width: 310,
+    marginTop: 6,
+    paddingRight: 10,
+  },
+  minorArtistContainer: {
+    flex: 1,
+    flexDirection: 'column',
     alignItems: 'center',
+    marginTop: 10,
+    marginBottom: 20,
+    // backgroundColor: '#0ff',x
   },
-  getStartedText: {
-    fontSize: 50,
-    color: 'rgba(96,100,109, 1)',
-    lineHeight: 50,
-    textAlign: 'center',
+  minorArtists: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 10,
   },
-
+  minorArtistImage: {
+    width: 70,
+    height: 70,
+    resizeMode: 'contain',
+    marginTop: 3,
+    marginRight: 5,
+    marginLeft: 15,
+  },
+  artistsProgressContainer: {
+    flex: 1,
+    flexDirection: 'column',
+    marginLeft: 8,
+  },
+  artistName: {
+    // backgroundColor: '#0f0',
+    marginTop: 5,
+    marginBottom: 32,
+  },
+  minorProgressContainer: {
+    flex: 1,
+    flexDirection: 'row',
+  },
+  minorProgressBar: {
+    paddingBottom: 0,
+    transform: [{ scaleY: 3.2 }],
+    height: 7,
+    width: 225,
+    marginTop: 6,
+    paddingRight: 10,
+    // backgroundColor: '#ff0',
+  },
 });
-
-{/* try {
-      setTimeout(async () => {
-        try {
-          console.log('>:c')
-          const granted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
-            {
-              'title': 'Photos Permission',
-              'message': 'Cool Photo App needs access to your camera so you can take awesome pictures.'
-            }
-          );
-          console.log('stress')
-          if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-            alert("You can use the camera")
-            CameraRoll.getPhotos({
-              first: 20,
-              assetType: 'Photos',
-            })
-              .then(r => {
-                this.setState({ photos: r.edges });
-                console.log('somethin')
-              })
-              .catch((err) => {
-                console.log("noop")
-                console.log(err)
-                //Error Loading Images
-              });
-          } else {
-            alert("Camera permission denied")
-          }
-
-
-        }
-        catch (err) { }
-      }, 1)
-    } catch (err) {
-      console.log('hm')
-      console.warn(err)
-    } */}
