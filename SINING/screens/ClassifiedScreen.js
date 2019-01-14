@@ -28,7 +28,6 @@ export default class ClassifiedScreen extends React.Component {
         return (
             <View style={styles.container}>
                 <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-                    <Text> FEIGHTERoo</Text>
                     <View style={styles.majorArtistContainer}>
                         <Image
                             source={this.state.majorArtist[2]}

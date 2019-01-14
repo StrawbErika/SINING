@@ -1,7 +1,6 @@
 import { Button } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import React from 'react';
-// import BadInstagramCloneApp from './BadInstagramCloneApp';
 import {
   Image,
   Platform,
@@ -97,28 +96,41 @@ export default class HomeScreen extends React.Component {
     );
   }
 
-  _handleButtonPress = () => {
-    setTimeout(async () => {
-      try {
-        const granted = await PermissionsAndroid.request(
-          PermissionsAndroid.PERMISSIONS.CAMERA,
-          {
-            'title': 'Cool Photo App Camera Permission',
-            'message': 'Cool Photo App needs access to your camera ' +
-              'so you can take awesome pictures.'
-          }
-        )
-        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-          console.log("You can use the camera")
-        } else {
-          console.log("Camera permission denied")
+  _handleButtonPress = async () => {
+    console.log('hey')
+    try {
+      console.log('heyy')
+
+      const granted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+        {
+          'title': 'Photos Permission',
+          'message': 'Cool Photo App needs access to your camera so you can take awesome pictures.'
         }
-      } catch (err) {
-        console.warn(err)
+      )
+
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        alert("You can use the camera")
+        CameraRoll.getPhotos({
+          first: 20,
+          assetType: 'Photos',
+        })
+          .then(r => {
+            this.setState({ photos: r.edges });
+            console.log('somethin')
+          })
+          .catch((err) => {
+            console.log("noop")
+            console.log(err)
+            //Error Loading Images
+          });
+      } else {
+        alert("Camera permission denied")
       }
+    } catch (err) {
+      console.warn(err)
+    }
 
 
-    })
 
 
   };
