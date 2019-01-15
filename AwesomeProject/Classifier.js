@@ -10,7 +10,7 @@ import {
     Linking,
 } from 'react-native';
 // JL: 1, FA: 2, CF: 3, BC: 4
-const allArtists = [["Juan Luna", 0.5, require("../assets/images/Juan_Luna.png")], ["Fernando Amorsolo", 0.3, require("../assets/images/Fernando_Amorsolo.png")], ["Carlos Francisco", 0.15, require("../assets/images/Carlos_Francisco.png")], ["Benedicto Cabrera", 0.05, require("../assets/images/Benedicto_Cabrera.png")]];
+const allArtists = [["Juan Luna", 0.5, require("./assets/images/Juan_Luna.png")], ["Fernando Amorsolo", 0.3, require("./assets/images/Fernando_Amorsolo.png")], ["Carlos Francisco", 0.15, require("./assets/images/Carlos_Francisco.png")], ["Benedicto Cabrera", 0.05, require("./assets/images/Benedicto_Cabrera.png")]];
 export default class ClassifiedScreen extends React.Component {
     static navigationOptions = {
         header: null,
