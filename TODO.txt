@@ -1,0 +1,3 @@
+Todo: 
+Crop image into 9 segments & resize to 250x250
+Image picked/taken, square ratio-ed and resized (250x250)
