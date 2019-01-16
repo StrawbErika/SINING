@@ -1,6 +1,3 @@
 Todo: 
 Crop image into 9 segments & resize to 250x250
-Dynamic GUI (namae & % depends on LIST)
-Make Camera work
-Pick from Gallery
 Image picked/taken, square ratio-ed and resized (250x250)
