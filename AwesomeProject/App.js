@@ -4,7 +4,8 @@ import {
   Text,
   View,
   Image,
-  Button
+  Button,
+  TouchableOpacity
 } from 'react-native';
 import ImagePicker from "react-native-image-picker";
 
@@ -28,7 +29,6 @@ export default class App extends Component {
       } else if (res.error) {
         console.log("Error", res.error);
       } else {
-        console.log('heyyyy')
         this.setState({
           pickedImage: { uri: res.uri }
         });
@@ -48,14 +48,16 @@ export default class App extends Component {
         <View style={styles.getStartedContainer}>
           <Text style={styles.getStartedText}>Sining </Text>
         </View>
+        <View style={styles.exitContainer}>
+          <Button title="x" onPress={this.resetHandler} style={styles.exitButton} />
+        </View>
         <View style={styles.placeholder}>
           <Image source={this.state.pickedImage} style={styles.previewImage} />
         </View>
         <View style={styles.button}>
-
           <Button title="Pick Image" onPress={this.pickImageHandler} />
+          {this.state.pickImage != null && <Button title="Proceed" />}
 
-          <Button title="Reset" onPress={this.resetHandler} />
 
         </View>
       </View>
@@ -101,6 +103,16 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%"
   },
+  exitButton: {
+    borderRadius: 100,
+    backgroundColor: "#eef"
+  },
+  exitContainer: {
+    top: 140,
+    left: 290,
+    position: 'absolute',
+
+  }
 
 
 })

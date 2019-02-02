@@ -1,5 +1,6 @@
 import cv2
 import numpy as np 
+import os
 
 def findCoordinates(rect):
     n=0
@@ -69,7 +70,7 @@ def cropSquareImage(croppedPainting):
 
 	return square
 
-def cut4Sections(painting):
+def cut9Sections(painting,path):
 	width, height = painting.shape[:2]
 	middleW = round(width/2)
 	middleH = round(height/2)
@@ -88,22 +89,17 @@ def cut4Sections(painting):
 	middleR = painting[middleWW:middleW+middleWW,middleH:height]
 	bottomR = painting[middleW:width,middleH:height]
 
-	cv2.imwrite("topL.jpg", topL)
-	cv2.imwrite("middleL.jpg", middleL)
-	cv2.imwrite("bottomL.jpg", bottomL)
+	cv2.imwrite(path+"topL.png", topL)
+	cv2.imwrite(path+"middleL.png", middleL)
+	cv2.imwrite(path+"bottomL.png", bottomL)
 
-	cv2.imwrite("topM.jpg", topM)
-	cv2.imwrite("middleM.jpg", middleM)
-	cv2.imwrite("bottomM.jpg", bottomM)
+	cv2.imwrite(path+"topM.png", topM)
+	cv2.imwrite(path+"middleM.png", middleM)
+	cv2.imwrite(path+"bottomM.png", bottomM)
 	
-	cv2.imwrite("topR.jpg", topR)
-	cv2.imwrite("middleR.jpg", middleR)
-	cv2.imwrite("bottomR.jpg", bottomR)
-
-	# cv2.imwrite("bottomL.jpg", bottomL)
-	# cv2.imwrite("bottomR.jpg", bottomR)
-
-
+	cv2.imwrite(path+"topR.png", topR)
+	cv2.imwrite(path+"middleR.png", middleR)
+	cv2.imwrite(path+"bottomR.png", bottomR)
 
 def rotate(image, degree):
 	num_rows, num_cols = image.shape[:2]
@@ -112,9 +108,27 @@ def rotate(image, degree):
 	rotation = cv2.warpAffine(image, rotation_matrix, (num_cols, num_rows))
 	return rotation
 
-painting = cropImage("heightTry.jpg")
-# square = cropSquareImage(painting)
-cut4Sections(painting)
+
+def allPics(path):
+	for filename in os.listdir(path):
+		folder = path+"/"+filename[:-4]+"/"
+		if not os.path.exists(folder):
+		    os.makedirs(folder)
+		# print(path+"/"+filename)
+		painting = cropImage(path+"/"+filename)
+		square = cropSquareImage(painting)
+		cut9Sections(square,folder)
+		cv2.imwrite(folder+"vFlip.png", cv2.flip(square, 0))
+		cv2.imwrite(folder+"hFlip.png", cv2.flip(square, 1))
+		cv2.imwrite(folder+"counter.png", rotate(square, 90))
+		cv2.imwrite(folder+"clock.png", rotate(square, -90))
+
+		# cv2.imwrite(name, cropImage(path+"/"+filename)) #NEED EXACT PATH??? ../../.. kind?
+				
+
+allPics('/home/shortcake/Desktop/190/SP/Image Processing/Amorsolo')
+# painting = cropImage("cropped.jpg")
+# cut9Sections(painting)
 # square = cv2.resize(square, (250, 250)) 
 
 
@@ -123,7 +137,7 @@ cut4Sections(painting)
 # cv2.imwrite("counter.jpg", rotate(square, 90))
 # cv2.imwrite("clock.jpg", rotate(square, -90))
 # cv2.imwrite("square.jpg", square)
-cv2.imwrite("cropped.jpg",painting)
+# cv2.imwrite("cropped1.jpg",painting)
 
 cv2.waitKey(0)
 cv2.destroyAllWindows()
