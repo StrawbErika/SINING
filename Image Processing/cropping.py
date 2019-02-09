@@ -70,7 +70,44 @@ def cropSquareImage(croppedPainting):
 
 	return square
 
-def cut9Sections(painting,path):
+def rotate(image, degree):
+	num_rows, num_cols = image.shape[:2]
+
+	rotation_matrix = cv2.getRotationMatrix2D((num_cols/2, num_rows/2), degree, 1)
+	rotation = cv2.warpAffine(image, rotation_matrix, (num_cols, num_rows))
+	return rotation
+
+def skew(square, folder):
+	rows, cols, ch = square.shape
+	pts1 = np.float32([[83, 90], [447, 90], [83, 472]])
+	# pts2 = np.float32([[83, 90], [447, 90], [83, 472]])
+	pts2 = np.float32([[83, 90], [447, 90], [150, 472]])
+ 
+	matrix = cv2.getAffineTransform(pts1, pts2)
+	result = cv2.warpAffine(square, matrix, (cols+450, rows))
+	cv2.imwrite(folder+"_skew"+".png", result)
+
+def augment(path, newpath,augmentation, painter):
+	path = path+painter
+	folder = newpath+painter+"/"+augmentation+"/"
+
+	if not os.path.exists(folder):
+		os.makedirs(folder)
+	i = 0
+	for filename in os.listdir(path):
+		i = i +1
+		folder = newpath+painter+"/"+augmentation+"/"+str(i)
+		painting = cropImage(path+"/"+filename)
+		square = cropSquareImage(painting)
+		cv2.imwrite(folder+".png", square)
+		cv2.imwrite(folder+"_vflip"+".png", cv2.flip(square, 0))
+		cv2.imwrite(folder+"_hflip"+".png", cv2.flip(square, 1))
+		cv2.imwrite(folder+"_counter"+".png", rotate(square, 90))
+		cv2.imwrite(folder+"_clock"+".png", rotate(square, -90))
+		cv2.imwrite(folder+"_180"+".png", rotate(square, -180))
+		skew(square, folder)
+
+def cut9Sections(painting,path, section):
 	width, height = painting.shape[:2]
 	middleW = round(width/2)
 	middleH = round(height/2)
@@ -88,56 +125,36 @@ def cut9Sections(painting,path):
 	topR = painting[0:middleW,middleH:height]
 	middleR = painting[middleWW:middleW+middleWW,middleH:height]
 	bottomR = painting[middleW:width,middleH:height]
-
-	cv2.imwrite(path+"topL.png", topL)
-	cv2.imwrite(path+"middleL.png", middleL)
-	cv2.imwrite(path+"bottomL.png", bottomL)
-
-	cv2.imwrite(path+"topM.png", topM)
-	cv2.imwrite(path+"middleM.png", middleM)
-	cv2.imwrite(path+"bottomM.png", bottomM)
-	
-	cv2.imwrite(path+"topR.png", topR)
-	cv2.imwrite(path+"middleR.png", middleR)
-	cv2.imwrite(path+"bottomR.png", bottomR)
-
-def rotate(image, degree):
-	num_rows, num_cols = image.shape[:2]
-
-	rotation_matrix = cv2.getRotationMatrix2D((num_cols/2, num_rows/2), degree, 1)
-	rotation = cv2.warpAffine(image, rotation_matrix, (num_cols, num_rows))
-	return rotation
+	if(section == "topL"): cv2.imwrite(path, topL)
+	elif(section == "middleL"): cv2.imwrite(path, middleL)
+	elif(section == "bottomL"): cv2.imwrite(path, bottomL)
+	elif(section == "topM"): cv2.imwrite(path, topM)
+	elif(section == "middleM"): cv2.imwrite(path, middleM)
+	elif(section == "bottomM"): cv2.imwrite(path, bottomM)
+	elif(section == "topR"): cv2.imwrite(path, topR)
+	elif(section == "middleR"):	cv2.imwrite(path, middleR)
+	elif(section == "bottomR"): cv2.imwrite(path, bottomR)
 
 
-def allPics(path):
-	for filename in os.listdir(path):
-		folder = path+"/"+filename[:-4]+"/"
-		if not os.path.exists(folder):
-		    os.makedirs(folder)
-		# print(path+"/"+filename)
-		painting = cropImage(path+"/"+filename)
-		square = cropSquareImage(painting)
-		cut9Sections(square,folder)
-		cv2.imwrite(folder+"vFlip.png", cv2.flip(square, 0))
-		cv2.imwrite(folder+"hFlip.png", cv2.flip(square, 1))
-		cv2.imwrite(folder+"counter.png", rotate(square, 90))
-		cv2.imwrite(folder+"clock.png", rotate(square, -90))
+def sectionIntoFolders(readPath, painter, section):
+	newPath = readPath+painter+"/Augmented"
+	folder = readPath+painter+"/Sections/"+section
+	if not os.path.exists(folder):
+		os.makedirs(folder)
 
-		# cv2.imwrite(name, cropImage(path+"/"+filename)) #NEED EXACT PATH??? ../../.. kind?
-				
-
-allPics('/home/shortcake/Desktop/190/SP/Image Processing/Amorsolo')
-# painting = cropImage("cropped.jpg")
-# cut9Sections(painting)
-# square = cv2.resize(square, (250, 250)) 
+	for filename in os.listdir(newPath):
+		colored = cv2.imread(newPath+"/"+filename, 1)
+		cut9Sections(colored,folder+"/"+filename,section)
 
 
-# cv2.imwrite("vFlip.jpg", cv2.flip(square, 0))
-# cv2.imwrite("hFlip.jpg", cv2.flip(square, 1))
-# cv2.imwrite("counter.jpg", rotate(square, 90))
-# cv2.imwrite("clock.jpg", rotate(square, -90))
-# cv2.imwrite("square.jpg", square)
-# cv2.imwrite("cropped1.jpg",painting)
+painters = ["Amorsolo", "Luna", "Francisco", "Cabrera"]
+sections = ["topL","topM","topR", "middleL", "middleM", "middleR", "bottomL", "bottomM", "bottomR"]
+for painter in painters:
+	augment('/home/shortcake/Desktop/190/SP/Image Processing/Painters/', '/home/shortcake/Desktop/190/SP/Image Processing/Processed/', "Augmented", painter)
+
+for painter in painters:
+	for section in sections:
+		sectionIntoFolders('/home/shortcake/Desktop/190/SP/Image Processing/Processed/', painter, section)
 
 cv2.waitKey(0)
 cv2.destroyAllWindows()
