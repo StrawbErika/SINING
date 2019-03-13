@@ -1,15 +1,15 @@
 #!/bin/bash
 
 sections=(
-    "BL"
-    # "BR"
+    # "BL"
     # "BM"
+    # "BR"
+    # "ML"
+    # "MM"
+    "MR"
     # "TL"
     # "TR"
     # "TM"
-    # "ML"
-    # "MR"
-    # "MM"
 )
 
 artists=(
@@ -58,17 +58,21 @@ for k in "${sections[@]}"; do
         artistCnt=$(($artistCnt+1))
     done
     cd ..
+    mkdir Tests 
+    for o in $( seq 1 5 ); do
+        mkdir ClassSet$o
+        cd Tests
+        mkdir C$o
+        cd ..
+        for p in ${artists[@]}; do
+            mv $p$k/C$o/$p ClassSet$o
+            mv $p$k/C$o/$p$o Tests/C$o
+            artistCnt=$(($artistCnt+1))
+        done
+    done
+    for q in ${artists[@]}; do
+        rm -rf $q$k
+    done
+
     cnt=$(($cnt+1))
 done
-
-# for i in "${sections[@]}"; do
-#         artistCnt=$(($artistCnt+1))
-#     done   
-#     cd ..
-#     cnt=$(($cnt+1))
-# done
-
-#HOW BOUT INSTEAD OF MAKING LISTS, JUST ITERATE FROM 1 TO 5 except for current iteration number 
-#EX if iteration 1, u make training set 2 3 4 5 test 1
-# iteration 2, training set 1 3 4 5 test 2
-# excluse iteration number
