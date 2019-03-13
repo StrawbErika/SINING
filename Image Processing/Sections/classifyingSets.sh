@@ -6,10 +6,10 @@ sections=(
     # "BR"
     # "ML"
     # "MM"
-    "MR"
+    # "MR"
     # "TL"
     # "TR"
-    # "TM"
+    "TM"
 )
 
 artists=(

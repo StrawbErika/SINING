@@ -1,0 +1,128 @@
+--------------------------------------------
+Amorsolo5
+ 
+amorsolo 0.50929075
+amorsolo 0.9361146
+amorsolo 0.98649967
+amorsolo 0.61335695
+luna 0.63890415
+amorsolo 0.7906315
+luna 0.91241825
+luna 0.98128164
+luna 0.81915176
+amorsolo 0.90750915
+amorsolo 0.9327139
+amorsolo 0.96980405
+amorsolo 0.9293234
+amorsolo 0.9473444
+amorsolo 0.7612384
+luna 0.6846487
+luna 0.48828992
+amorsolo 0.94765407
+amorsolo 0.9835435
+amorsolo 0.94068086
+amorsolo 0.94687885
+amorsolo 0.8435054
+cabrera 0.38899755
+amorsolo 0.97641194
+amorsolo 0.5534022
+amorsolo 0.74977803
+amorsolo 0.52421916
+amorsolo 0.68135333
+21
+--------------------------------------------
+Cabrera5
+ 
+cabrera 0.7681366
+cabrera 0.80757314
+cabrera 0.97914004
+cabrera 0.48129362
+cabrera 0.5262446
+cabrera 0.62853754
+luna 0.7518122
+cabrera 0.99556065
+cabrera 0.99317616
+cabrera 0.9345469
+cabrera 0.99828064
+cabrera 0.9981274
+cabrera 0.9906185
+cabrera 0.99687177
+francisco 0.5763037
+francisco 0.9431505
+francisco 0.85123676
+cabrera 0.9013418
+francisco 0.93078274
+francisco 0.7258468
+francisco 0.9579302
+cabrera 0.91179097
+cabrera 0.7932486
+cabrera 0.77285814
+cabrera 0.93683153
+cabrera 0.46644467
+cabrera 0.6624642
+cabrera 0.5984376
+21
+--------------------------------------------
+Francisco5
+ 
+francisco 0.9646695
+francisco 0.9803284
+francisco 0.87568367
+francisco 0.73032004
+cabrera 0.3642276
+francisco 0.6269996
+francisco 0.94642746
+francisco 0.9955082
+francisco 0.99875844
+francisco 0.99131364
+francisco 0.9652466
+francisco 0.9959117
+francisco 0.99238026
+francisco 0.9597137
+francisco 0.9628514
+francisco 0.9973254
+francisco 0.9946885
+francisco 0.99873596
+francisco 0.99880636
+francisco 0.9991522
+francisco 0.99838376
+francisco 0.9982444
+francisco 0.99945503
+francisco 0.99876523
+francisco 0.99878687
+francisco 0.9997762
+francisco 0.99824274
+francisco 0.9986119
+27
+--------------------------------------------
+Luna5
+ 
+amorsolo 0.9649927
+amorsolo 0.9359814
+luna 0.85267913
+amorsolo 0.991325
+luna 0.67538375
+amorsolo 0.6422024
+luna 0.59879017
+amorsolo 0.44734472
+luna 0.90742236
+luna 0.98233265
+luna 0.47412005
+luna 0.6937418
+luna 0.52777785
+luna 0.89401263
+luna 0.8969116
+luna 0.96710426
+luna 0.92862195
+luna 0.9942644
+luna 0.98596513
+luna 0.97165257
+luna 0.86414206
+luna 0.9982829
+luna 0.9988115
+luna 0.9995061
+luna 0.9768399
+luna 0.9973895
+luna 0.98989266
+luna 0.99889463
+23
