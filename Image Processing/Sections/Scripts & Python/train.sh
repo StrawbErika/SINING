@@ -7,9 +7,9 @@ sections=(
     # "ML"
     # "MM"
     # "MR"
-    "TL"
-    "TR"
-    "TM"
+    # "TL"
+    # "TR"
+    # "TM"
 )
 
 
@@ -45,3 +45,4 @@ for k in "${sections[@]}"; do
     cnt=$(($cnt+1))
 done
 
+ .  

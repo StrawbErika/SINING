@@ -6,10 +6,10 @@ sections=(
     # "BR"
     # "ML"
     # "MM"
-    "MR"
-    # "TL"
-    # "TR"
-    # "TM"
+    # "MR"
+    "TL"
+    "TR"
+    "TM"
 )
 
 artists=(
@@ -52,6 +52,7 @@ for k in "${sections[@]}"; do
         rm -rf test.py
         cd ..
     done
+    cd ..
 done
 
 
