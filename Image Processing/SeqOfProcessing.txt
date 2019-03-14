@@ -1,0 +1,8 @@
+Take out all from Scripts & Python before running the scripts
+Raw scripts (minus sectionBySegments & cropping.py), pythons and Segment Folders should be on the same folder
+cropping.py //does the augmentation then the segmentation (into 9)
+sectionBySegments.sh //moves from artists to by segments (BR BM BL etc)
+intoFive.sh //segments images into 5 parts
+classifyingSets.sh //for cross validation, gets 1-4 as training 5 as test, 1-3,5 as training 4 as test etc
+train.sh //groups and puts retrain.py, runs retrain.py:
+test.sh

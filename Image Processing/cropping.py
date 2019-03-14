@@ -85,7 +85,7 @@ def skew(square, folder):
  
 	matrix = cv2.getAffineTransform(pts1, pts2)
 	result = cv2.warpAffine(square, matrix, (cols+450, rows))
-	cv2.imwrite(folder+"_skew"+".png", result)
+	cv2.imwrite(folder+"_skew"+".jpg", result)
 
 def augment(path, newpath,augmentation, painter):
 	path = path+painter
@@ -99,12 +99,12 @@ def augment(path, newpath,augmentation, painter):
 		folder = newpath+painter+"/"+augmentation+"/"+str(i)
 		painting = cropImage(path+"/"+filename)
 		square = cropSquareImage(painting)
-		cv2.imwrite(folder+".png", square)
-		cv2.imwrite(folder+"_vflip"+".png", cv2.flip(square, 0))
-		cv2.imwrite(folder+"_hflip"+".png", cv2.flip(square, 1))
-		cv2.imwrite(folder+"_counter"+".png", rotate(square, 90))
-		cv2.imwrite(folder+"_clock"+".png", rotate(square, -90))
-		cv2.imwrite(folder+"_180"+".png", rotate(square, -180))
+		cv2.imwrite(folder+".jpg", square)
+		cv2.imwrite(folder+"_vflip"+".jpg", cv2.flip(square, 0))
+		cv2.imwrite(folder+"_hflip"+".jpg", cv2.flip(square, 1))
+		cv2.imwrite(folder+"_counter"+".jpg", rotate(square, 90))
+		cv2.imwrite(folder+"_clock"+".jpg", rotate(square, -90))
+		cv2.imwrite(folder+"_180"+".jpg", rotate(square, -180))
 		skew(square, folder)
 
 def cut9Sections(painting,path, section):
@@ -125,20 +125,20 @@ def cut9Sections(painting,path, section):
 	topR = painting[0:middleW,middleH:height]
 	middleR = painting[middleWW:middleW+middleWW,middleH:height]
 	bottomR = painting[middleW:width,middleH:height]
-	if(section == "topL"): cv2.imwrite(path, topL)
-	elif(section == "middleL"): cv2.imwrite(path, middleL)
-	elif(section == "bottomL"): cv2.imwrite(path, bottomL)
-	elif(section == "topM"): cv2.imwrite(path, topM)
-	elif(section == "middleM"): cv2.imwrite(path, middleM)
-	elif(section == "bottomM"): cv2.imwrite(path, bottomM)
-	elif(section == "topR"): cv2.imwrite(path, topR)
-	elif(section == "middleR"):	cv2.imwrite(path, middleR)
-	elif(section == "bottomR"): cv2.imwrite(path, bottomR)
+	if(section == "TL"): cv2.imwrite(path, topL)
+	elif(section == "ML"): cv2.imwrite(path, middleL)
+	elif(section == "BL"): cv2.imwrite(path, bottomL)
+	elif(section == "TM"): cv2.imwrite(path, topM)
+	elif(section == "MM"): cv2.imwrite(path, middleM)
+	elif(section == "BM"): cv2.imwrite(path, bottomM)
+	elif(section == "TR"): cv2.imwrite(path, topR)
+	elif(section == "MR"):	cv2.imwrite(path, middleR)
+	elif(section == "BR"): cv2.imwrite(path, bottomR)
 
 
-def sectionIntoFolders(readPath, painter, section):
+def sectionIntoFolders(readPath, painter, newFolder, section):
 	newPath = readPath+painter+"/Augmented"
-	folder = readPath+painter+"/Sections/"+section
+	folder = readPath+painter+"/Sections/"+newFolder
 	if not os.path.exists(folder):
 		os.makedirs(folder)
 
@@ -148,13 +148,13 @@ def sectionIntoFolders(readPath, painter, section):
 
 
 painters = ["Amorsolo", "Luna", "Francisco", "Cabrera"]
-sections = ["topL","topM","topR", "middleL", "middleM", "middleR", "bottomL", "bottomM", "bottomR"]
+sections = ["TL","TM","TR", "ML", "MM", "MR", "BL", "BM", "BR"]
 for painter in painters:
 	augment('/home/shortcake/Desktop/190/SP/Image Processing/Painters/', '/home/shortcake/Desktop/190/SP/Image Processing/Processed/', "Augmented", painter)
 
 for painter in painters:
 	for section in sections:
-		sectionIntoFolders('/home/shortcake/Desktop/190/SP/Image Processing/Processed/', painter, section)
+		sectionIntoFolders('/home/shortcake/Desktop/190/SP/Image Processing/Processed/', painter, painter+section, section)
 
 cv2.waitKey(0)
 cv2.destroyAllWindows()

@@ -1,3 +1,9 @@
 Todo: 
-Crop image into 9 segments & resize to 250x250
-Image picked/taken, square ratio-ed and resized (250x250)
+Scripting:	
+	Section into 5 parts: pics	
+	Script for training
+Test:
+	Check if localized data when train
+	If reset/shutdown: trained doesnt work anymore
+	Check if test is dependent on internet
+
