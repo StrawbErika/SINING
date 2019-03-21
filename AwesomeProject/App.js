@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import ImagePicker from "react-native-image-picker";
 
+import ToastExample from './ToastExample';
 
 export default class App extends Component {
 
@@ -32,14 +33,16 @@ export default class App extends Component {
         this.setState({
           pickedImage: { uri: res.uri }
         });
-        console.log(this.state.pickedImage)
-
       }
+      console.log(this.state.pickedImage.uri)
     });
   }
 
   resetHandler = () => {
     this.reset();
+  }
+  activateToast = () => {
+    ToastExample.show(this.state.pickedImage.uri, ToastExample.SHORT);
   }
 
   render() {
@@ -56,7 +59,7 @@ export default class App extends Component {
         </View>
         <View style={styles.button}>
           <Button title="Pick Image" onPress={this.pickImageHandler} />
-          {this.state.pickImage != null && <Button title="Proceed" />}
+          {this.state.pickedImage != null && <Button title="Proceed" onPress={this.activateToast} />}
 
 
         </View>
