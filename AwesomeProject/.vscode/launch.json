@@ -1,0 +1,11 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - ImageSplitTest",
+            "request": "launch",
+            "mainClass": "ImageSplitTest",
+            "projectName": "app"
+        }
+    ]
+}
