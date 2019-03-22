@@ -1,9 +1,10 @@
 Todo: 
-Scripting:	
-	Section into 5 parts: pics	
-	Script for training
-Test:
-	Check if localized data when train
-	If reset/shutdown: trained doesnt work anymore
-	Check if test is dependent on internet
+Mobile App:
+	Classifying screen should just be 1 Artist
+	Should learn how to separate into 9 overlapping parts (input image) 
+		then serve image to respective segment
+CLassifying:
+	make java to read image from mobile app (check cabalio's code)
+	make separate code for training, supposed to show when activate 
+		(like when it learns), check cabalio's code
 
