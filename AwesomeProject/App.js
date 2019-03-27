@@ -34,7 +34,7 @@ export default class App extends Component {
           pickedImage: { uri: res.uri }
         });
       }
-      console.log(this.state.pickedImage.uri)
+      console.log("APP: " + this.state.pickedImage.uri)
     });
   }
 
@@ -42,6 +42,7 @@ export default class App extends Component {
     this.reset();
   }
   activateToast = () => {
+    console.log("APP_TOAST: " + this.state.pickedImage.uri)
     ToastExample.show(this.state.pickedImage.uri, ToastExample.SHORT);
   }
 
