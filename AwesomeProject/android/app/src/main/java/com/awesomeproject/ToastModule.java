@@ -1,8 +1,9 @@
 // ToastModule.java
-
 package com.awesomeproject;
 
+import android.util.Log;
 import android.widget.Toast;
+import android.widget.ImageView;
 
 import com.facebook.react.bridge.NativeModule;
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -10,6 +11,8 @@ import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 
+import java.io.*;
+import android.graphics.Bitmap;
 import java.util.Map;
 import java.util.HashMap;
 
@@ -36,8 +39,22 @@ public class ToastModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void show(String message, int duration) {
-        Toast.makeText(getReactApplicationContext(), message, duration).show();
+    public void show(String message, int duration) throws IOException {
+        Log.d("NOOTCUTE", message);
+
+        ImageSplitTest image = new ImageSplitTest();
+        Bitmap imgs[] = image.split(message);
+        // Toast.makeText(getReactApplicationContext(), message, duration).show();
+        ImageView view = new ImageView(getReactApplicationContext());
+        Log.d("NOOTCUTE", "did good!");
+        Test test = new Test();
+        test.init();
+        test.recognizeImage(imgs[0]);
+        // Toast t = new Toast(getReactApplicationContext());
+        // Log.d("NOOTCUTE", Integer.toString(imgs.length));
+        // view.setImageBitmap(imgs[1]);
+        // t.setView(view);
+        // t.show();
     }
     // @ReactMethod
     // public void classify(String url, int duration){
