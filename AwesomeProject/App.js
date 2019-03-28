@@ -10,6 +10,7 @@ import {
 import ImagePicker from "react-native-image-picker";
 
 import ToastExample from './ToastExample';
+import Classify from './Classify';
 
 export default class App extends Component {
 
@@ -43,7 +44,8 @@ export default class App extends Component {
   }
   activateToast = () => {
     console.log("APP_TOAST: " + this.state.pickedImage.uri)
-    ToastExample.show(this.state.pickedImage.uri, ToastExample.SHORT);
+    // Classify.classify(this.state.pickedImage.uri);
+    ToastExample.show(this.state.pickedImage.uri);
   }
 
   render() {
