@@ -54,7 +54,10 @@ export default class App extends Component {
           <Text style={styles.getStartedText}>Sining </Text>
         </View>
         <View style={styles.exitContainer}>
-          <Button title="x" onPress={this.resetHandler} style={styles.exitButton} />
+          <TouchableOpacity onPress={this.resetHandler}>
+            <View style={styles.circleButton}>
+            </View>
+          </TouchableOpacity>
         </View>
         <View style={styles.placeholder}>
           <Image source={this.state.pickedImage} style={styles.previewImage} />
@@ -108,15 +111,19 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%"
   },
-  exitButton: {
-    borderRadius: 100,
-    backgroundColor: "#eef"
+  exitText: {
+    alignItems: 'center',
   },
   exitContainer: {
     top: 140,
-    left: 290,
+    left: 280,
     position: 'absolute',
-
+  },
+  circleButton: {
+    width: 40,
+    height: 40,
+    borderRadius: 150 / 2,
+    backgroundColor: '#00BCD4',
   }
 
 
