@@ -11,11 +11,6 @@ public class ImageSplitTest {
     }
 
     public static Bitmap[] split(String fileName) throws IOException {
-        // BitmapFactory.Options options = new BitmapFactory.Options();
-        // options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-        // Bitmap image =
-        // BitmapFactory.decodeFile(fileName.split("file:///")[1],
-        // options);
         Log.d("NOOTCUTE", fileName);
         Log.d("NOOTCUTE", fileName.split("file://")[1]);
 
@@ -43,8 +38,10 @@ public class ImageSplitTest {
                 square);
         for (int x = 0; x < rows; x++) {
             for (int y = 0; y < cols; y++) {
-                imgs[count] = croppedImage.createBitmap(croppedImage, croppedImage.getWidth() - square,
-                        croppedImage.getHeight() - square, chunkWidth, chunkHeight); // double check :'(
+
+                imgs[count] = croppedImage.createBitmap(croppedImage, x * chunkWidth, y * chunkHeight, chunkWidth,
+                        chunkHeight); // double
+                count = count + 1;
             }
         }
         return imgs;

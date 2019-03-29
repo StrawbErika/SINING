@@ -46,18 +46,10 @@ public class ToastModule extends ReactContextBaseJavaModule {
         Bitmap imgs[] = image.split(message);
         // Toast.makeText(getReactApplicationContext(), message, duration).show();
         ImageView view = new ImageView(getReactApplicationContext());
-        Log.d("NOOTCUTE", "did good!");
-        Test test = new Test();
-        test.init();
-        test.recognizeImage(imgs[0]);
         // Toast t = new Toast(getReactApplicationContext());
         // Log.d("NOOTCUTE", Integer.toString(imgs.length));
-        // view.setImageBitmap(imgs[1]);
+        // view.setImageBitmap(imgs[3]);
         // t.setView(view);
         // t.show();
     }
-    // @ReactMethod
-    // public void classify(String url, int duration){
-
-    // }
 }
