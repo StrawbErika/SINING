@@ -44,8 +44,8 @@ export default class App extends Component {
   }
   activateToast = () => {
     console.log("APP_TOAST: " + this.state.pickedImage.uri)
-    // Classify.classify(this.state.pickedImage.uri);
-    ToastExample.show(this.state.pickedImage.uri);
+    Classify.classify(this.state.pickedImage.uri)
+    // ToastExample.show(this.state.pickedImage.uri, ToastExample.SHORT);
   }
 
   render() {

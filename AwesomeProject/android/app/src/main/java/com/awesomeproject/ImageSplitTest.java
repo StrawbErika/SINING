@@ -38,8 +38,9 @@ public class ImageSplitTest {
                 square);
         for (int x = 0; x < rows; x++) {
             for (int y = 0; y < cols; y++) {
-                imgs[count] = croppedImage.createBitmap(croppedImage, croppedImage.getWidth() - square,
-                        croppedImage.getHeight() - square, chunkWidth, chunkHeight); // double check :'(
+
+                imgs[count] = croppedImage.createBitmap(croppedImage, x * chunkWidth, y * chunkHeight, chunkWidth,
+                        chunkHeight); // double
                 count = count + 1;
             }
         }

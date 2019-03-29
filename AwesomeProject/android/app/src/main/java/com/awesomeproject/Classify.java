@@ -6,6 +6,7 @@ import android.widget.Toast;
 import android.widget.ImageView;
 import android.content.res.AssetManager;
 import android.graphics.Color;
+import android.graphics.Bitmap;
 
 import com.facebook.react.bridge.NativeModule;
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -16,7 +17,6 @@ import com.facebook.react.bridge.ReactMethod;
 import org.tensorflow.contrib.android.TensorFlowInferenceInterface;
 
 import java.io.*;
-import android.graphics.Bitmap;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.ArrayList;
@@ -26,7 +26,7 @@ public class Classify extends ReactContextBaseJavaModule {
     private ReactApplicationContext reactContext;
     private ArrayList<String> artistClasses;
     private TensorFlowInferenceInterface inferenceInterface;
-    private final String modelName = "output_graph.pb";
+    private final String one = "output_graph.pb";
     private final String input = "Placeholder";
     private final String output = "final_result";
     private final int numClasses = 4;
@@ -44,18 +44,18 @@ public class Classify extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void classify(String message) throws IOException {
+    public String classify(String message) throws IOException {
         ImageSplitTest image = new ImageSplitTest();
         Bitmap imgs[] = image.split(message);
+        ArrayList<String> topArtist = new ArrayList<String>();
         this.readLabel();
         int cnt = 0;
         while (cnt != imgs.length) {
             this.recognizeImage(imgs[cnt]);
-            this.initResultsView();
-            Log.d("NOOTCUTE", "NEXT");
+            topArtist.add(this.initResultsView());
             cnt = cnt + 1;
         }
-
+        return countArtists(topArtist);
     }
 
     public void readLabel() {
@@ -71,6 +71,67 @@ public class Classify extends ReactContextBaseJavaModule {
         } catch (IOException e) {
             Log.d("NOOTCUTE", e.toString(), new RuntimeException());
         }
+    }
+
+    public static String countArtists(ArrayList<String> art) {
+        ArrayList<String> artCopy = art;
+        int cnt = 0;
+        int a = 0;
+        int c = 0;
+        int f = 0;
+        int l = 0;
+        while (cnt != artCopy.size()) {
+            switch (artCopy.get(cnt)) {
+            case "amorsolo":
+                a = a + 1;
+                break;
+            case "cabrera":
+                c = c + 1;
+                break;
+            case "francisco":
+                f = f + 1;
+                break;
+            case "luna":
+                l = l + 1;
+                break;
+            }
+            cnt = cnt + 1;
+        }
+        ArrayList<Integer> artists = new ArrayList<Integer>();
+        artists.add(a);
+        artists.add(c);
+        artists.add(f);
+        artists.add(l);
+        return topArtist(artists);
+    }
+
+    public static String topArtist(ArrayList<Integer> artists) {
+        int max = artists.get(0);
+        int index = 0;
+        int cnt = 1;
+        String artist = null;
+        while (cnt != artists.size()) {
+            if (artists.get(cnt) > max) {
+                max = artists.get(cnt);
+                index = cnt;
+            }
+            cnt = cnt + 1;
+        }
+        switch (index) {
+        case 0:
+            artist = "amorsolo";
+            break;
+        case 1:
+            artist = "cabrera";
+            break;
+        case 2:
+            artist = "francisco";
+            break;
+        case 3:
+            artist = "luna";
+            break;
+        }
+        return artist;
     }
 
     public void recognizeImage(Bitmap croppedBmp) { //
@@ -104,7 +165,7 @@ public class Classify extends ReactContextBaseJavaModule {
 
     }
 
-    public void initResultsView() { //
+    public String initResultsView() { //
 
         Float[] predictValuesObj = new Float[predictValues.length];
 
@@ -117,7 +178,6 @@ public class Classify extends ReactContextBaseJavaModule {
 
         float[] topPredictions = Arrays.copyOfRange(sortedPredictions, sortedPredictions.length - 4,
                 sortedPredictions.length);
-        // sortedPredictions = null;
 
         int[] topPredictionsIndices = new int[4];
 
@@ -125,30 +185,24 @@ public class Classify extends ReactContextBaseJavaModule {
             topPredictionsIndices[i] = Arrays.asList(predictValuesObj).indexOf(topPredictions[i]);
         }
 
-        // final int topPredictionIndex = topPredictionsIndices[3];
-
-        // final String topPrediction1 =artistClasses.get(topPredictionsIndices[4]);
         final String topPrediction2 = artistClasses.get(topPredictionsIndices[3]);
         final String topPrediction3 = artistClasses.get(topPredictionsIndices[2]);
         final String topPrediction4 = artistClasses.get(topPredictionsIndices[1]);
         final String topPrediction5 = artistClasses.get(topPredictionsIndices[0]);
 
-        // final String prob1 = String.valueOf(sortedPredictions[4]);
         final String prob2 = String.valueOf(sortedPredictions[3]);
         final String prob3 = String.valueOf(sortedPredictions[2]);
         final String prob4 = String.valueOf(sortedPredictions[1]);
         final String prob5 = String.valueOf(sortedPredictions[0]);
 
-        // final double prog1 = sortedPredictions[4] * 100;
         final double prog2 = sortedPredictions[3] * 100;
         final double prog3 = sortedPredictions[2] * 100;
         final double prog4 = sortedPredictions[1] * 100;
         final double prog5 = sortedPredictions[0] * 100;
 
-        Log.d("NOOTCUTE", "prog2: " + Double.toString(prog2));
-        Log.d("NOOTCUTE", " prog3: " + Double.toString(prog3));
-        Log.d("NOOTCUTE", " prog4: " + Double.toString(prog4));
-        Log.d("NOOTCUTE", " prog5: " + Double.toString(prog5));
-
+        return topPrediction2;
     }
 }
+// 0 3 6
+// 1 4 7
+// 2 5 8
