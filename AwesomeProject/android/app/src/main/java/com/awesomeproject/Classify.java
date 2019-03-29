@@ -26,7 +26,7 @@ public class Classify extends ReactContextBaseJavaModule {
     private ReactApplicationContext reactContext;
     private ArrayList<String> artistClasses;
     private TensorFlowInferenceInterface inferenceInterface;
-    private final String one = "output_graph.pb";
+    private final String modelName = "output_graph.pb";
     private final String input = "Placeholder";
     private final String output = "final_result";
     private final int numClasses = 4;
@@ -50,11 +50,15 @@ public class Classify extends ReactContextBaseJavaModule {
         ArrayList<String> topArtist = new ArrayList<String>();
         this.readLabel();
         int cnt = 0;
+        long startTime = System.currentTimeMillis();
+
         while (cnt != imgs.length) {
             this.recognizeImage(imgs[cnt]);
             topArtist.add(this.initResultsView());
             cnt = cnt + 1;
         }
+        long endTime = System.currentTimeMillis();
+        Log.d("NOOTCUTE", "Time to predict: " + (endTime - startTime) + "milliseconds");
         return countArtists(topArtist);
     }
 
@@ -199,6 +203,8 @@ public class Classify extends ReactContextBaseJavaModule {
         final double prog3 = sortedPredictions[2] * 100;
         final double prog4 = sortedPredictions[1] * 100;
         final double prog5 = sortedPredictions[0] * 100;
+
+        Log.d("NOOTCUTE", topPrediction2);
 
         return topPrediction2;
     }
