@@ -12,6 +12,7 @@
     "react-native-camera": "^1.8.0",
     "react-native-elements": "^1.1.0",
     "react-native-image-picker": "^0.28.0",
+    "react-native-threads": "0.0.16",
     "react-native-vector-icons": "^6.4.2"
   },
   "devDependencies": {

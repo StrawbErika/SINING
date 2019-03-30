@@ -1,167 +1,93 @@
 import React, { Component } from 'react';
 import {
+  Image,
+  ScrollView,
   StyleSheet,
   Text,
-  View,
-  Image,
-  Button,
   TouchableOpacity,
+  View,
+  Linking,
 } from 'react-native';
-import ImagePicker from "react-native-image-picker";
-
-import Classify from './Classify';
-import Loading from './Loading';
-
+const allArtists = [["Juan Luna", require("./assets/images/Juan_Luna.png"), "luna"], ["Fernando Amorsolo", require("./assets/images/Fernando_Amorsolo.png"), "amorsolo"], ["Carlos Francisco", require("./assets/images/Carlos_Francisco.png"), "francisco"], ["Benedicto Cabrera", require("./assets/images/Benedicto_Cabrera.png"), "cabrera"]];
 export default class App extends Component {
-
-  state = {
-    pickedImage: null,
-    topArtist: null,
-    isLoading: false
+  static navigationOptions = {
+    header: null,
+  };
+  constructor() {
+    super()
+    this.state = {
+      majorArtist: allArtists[0],
+    }
   }
 
-  reset = () => {
-    this.setState({
-      pickedImage: null
-    });
-  }
-
-  pickImageHandler = () => {
-    ImagePicker.showImagePicker({ title: "Pick a Painting", maxWidth: 800, maxHeight: 600 }, res => {
-      if (res.didCancel) {
-        console.log("User cancelled!");
-      } else if (res.error) {
-        console.log("Error", res.error);
-      } else {
-        this.setState({
-          pickedImage: { uri: res.uri }
-        });
-      }
-    });
-  }
-
-  resetHandler = () => {
-    this.reset();
-  }
-  activateToast = () => {
-    console.log("YEs the code changed")
-    this.setState({
-      isLoading: true
-    }, async () => {
-      this.setState({
-        topArtist: await Classify.classify(this.state.pickedImage.uri),
-      })
-    })
-  }
+  // reset = (props) => {
+  // }
 
   render() {
     return (
       <View style={styles.container}>
-        <View style={styles.getStartedContainer}>
-          <Text style={styles.getStartedText}>Sining </Text>
-        </View>
-        <View style={styles.placeholder}>
-          <Image source={this.state.pickedImage} style={styles.previewImage} />
-        </View>
-        <View style={styles.button}>
-          <TouchableOpacity onPress={this.pickImageHandler}>
-            <View style={styles.buttonTouchable}>
-              <Text style={styles.buttonText}> Pick Image</Text>
-            </View>
-          </TouchableOpacity>
-          {
-            this.state.pickedImage != null &&
-
-            <TouchableOpacity onPress={this.activateToast}>
-              <View style={styles.buttonTouchable}>
-                <Text style={styles.buttonText}> Proceed</Text>
-              </View>
-
+        <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
+          <View>
+            <TouchableOpacity style={styles.helpLink} value={this.state.majorArtist} onPress={this._handleMajorArtistPress}>
+              <Text style={styles.backText}> Back </Text>
             </TouchableOpacity>
-          }
-        </View>
-        <View style={styles.exitContainer}>
-          <TouchableOpacity onPress={this.resetHandler}>
-            <View style={styles.circleButton}>
-              <Text style={styles.exitText}> x </Text>
+          </View>
+          <View style={styles.majorArtistContainer}>
+            <View style={styles.majorArtistImageContainer}>
+              <Image
+                source={this.state.majorArtist[1]}
+                style={styles.majorArtistImage}
+              />
+              <TouchableOpacity style={styles.helpLink} value={this.state.majorArtist} onPress={this._handleMajorArtistPress}>
+                <Text style={styles.helpLinkText}> {this.state.majorArtist[0]}</Text>
+              </TouchableOpacity>
             </View>
-          </TouchableOpacity>
-        </View>
-        {
-          this.state.isLoading && <Loading />
-        }
-      </View>
+          </View>
+        </ScrollView>
+      </View >
     );
   }
 }
+_handleMajorArtistPress = (e) => {
+  Linking.openURL('https://google.com')
+  // console.log("HEY")
+  // WebBrowser.openBrowserAsync(
+  //     'https://en.wikipedia.org/wiki/Juan_Luna'
+  // );
+};
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: "center"
+    flex: 1,
+    backgroundColor: '#fff',
   },
-  getStartedText: {
-    fontSize: 50,
-    color: 'rgba(96,100,109, 1)',
-    lineHeight: 50,
-    textAlign: 'center',
-  },
-  getStartedContainer: {
+  majorArtistContainer: {
     alignItems: 'center',
-    marginHorizontal: 50,
-    marginTop: 80,
+    marginTop: 85,
+    marginBottom: 10,
+    // backgroundColor: '#0ff',
   },
-  textStyle: {
-    fontWeight: "bold",
-    fontSize: 30,
-    textAlign: "center",
-    color: "red",
-    marginTop: 10
+  majorArtistImageContainer: {
+    width: 300,
+    resizeMode: 'contain',
+    alignItems: 'center',
+    // backgroundColor: '#0f0',
   },
-  placeholder: {
-    backgroundColor: "#eee",
+  majorArtistImage: {
     width: 250,
     height: 250,
-    marginTop: 30,
+    resizeMode: 'contain',
+    marginTop: 3,
+    // marginLeft: -10,
   },
-  button: {
-    width: "80%",
-    marginTop: 30,
-    flexDirection: "row",
-    justifyContent: "space-around",
+  helpLink: {
+    marginVertical: 20,
   },
-  buttonTouchable: {
-    alignItems: 'center',
-    width: 100,
-    backgroundColor: '#00BCD4',
-    borderRadius: 50,
-    height: 40
+  helpLinkText: {
+    fontSize: 30,
   },
-  buttonText: {
-    marginTop: 10,
-    color: 'white',
-    fontSize: 15,
+  backText: {
+    fontSize: 20,
+    marginLeft: 20
   },
-  previewImage: {
-    width: "100%",
-    height: "100%"
-  },
-  exitText: {
-    marginTop: 5,
-    color: 'white',
-    fontSize: 15,
-  },
-  exitContainer: {
-    top: 140,
-    left: 290,
-    position: 'absolute',
-  },
-  circleButton: {
-    alignItems: 'center',
-    width: 30,
-    height: 30,
-    borderRadius: 150 / 2,
-    backgroundColor: '#00BCD4',
-  }
-
-
-})
+});

@@ -9,7 +9,6 @@ import {
     View,
     Linking,
 } from 'react-native';
-// JL: 1, FA: 2, CF: 3, BC: 4
 const allArtists = [["Juan Luna", 0.5, require("./assets/images/Juan_Luna.png")], ["Fernando Amorsolo", 0.3, require("./assets/images/Fernando_Amorsolo.png")], ["Carlos Francisco", 0.15, require("./assets/images/Carlos_Francisco.png")], ["Benedicto Cabrera", 0.05, require("./assets/images/Benedicto_Cabrera.png")]];
 export default class ClassifiedScreen extends React.Component {
     static navigationOptions = {
@@ -19,8 +18,7 @@ export default class ClassifiedScreen extends React.Component {
         super()
 
         this.state = {
-            majorArtist: allArtists[0],
-            artist: allArtists.slice(1)
+            majorArtist: allArtists,
         }
     }
 
@@ -52,44 +50,6 @@ export default class ClassifiedScreen extends React.Component {
                             </View>
                         </View>
                     </View>
-                    <View style={styles.minorArtistContainer}>
-                        {
-                            this.state.artist.map((artistList, index) => {
-                                return (
-                                    <View style={styles.minorArtists} key={index}>
-                                        <Image
-                                            source={artistList[2]}
-                                            style={styles.minorArtistImage}
-                                        />
-
-                                        <View style={styles.artistsProgressContainer}>
-                                            <View style={styles.artistName}>
-                                                <Text> {artistList[0]} </Text>
-                                            </View>
-
-                                            <View style={styles.minorProgressContainer}>
-                                                <View>
-                                                    <ProgressBarAndroid
-                                                        styleAttr="Horizontal"
-                                                        indeterminate={false}
-                                                        progress={artistList[1]}
-                                                        color="#000"
-                                                        style={styles.minorProgressBar}
-                                                    />
-                                                </View>
-                                                <View >
-                                                    <Text> {artistList[1] * 100}% </Text>
-                                                </View>
-                                            </View>
-
-                                        </View>
-                                    </View>
-
-                                )
-                            })
-                        }
-                    </View>
-
                 </ScrollView>
             </View >
         );
@@ -140,28 +100,6 @@ const styles = StyleSheet.create({
         marginTop: 6,
         paddingRight: 10,
     },
-    minorArtistContainer: {
-        flex: 1,
-        flexDirection: 'column',
-        alignItems: 'center',
-        marginTop: 10,
-        marginBottom: 20,
-        // backgroundColor: '#0ff',x
-    },
-    minorArtists: {
-        flex: 1,
-        flexDirection: 'row',
-        alignItems: 'center',
-        marginBottom: 10,
-    },
-    minorArtistImage: {
-        width: 70,
-        height: 70,
-        resizeMode: 'contain',
-        marginTop: 3,
-        marginRight: 5,
-        marginLeft: 15,
-    },
     artistsProgressContainer: {
         flex: 1,
         flexDirection: 'column',
@@ -171,18 +109,5 @@ const styles = StyleSheet.create({
         // backgroundColor: '#0f0',
         marginTop: 5,
         marginBottom: 32,
-    },
-    minorProgressContainer: {
-        flex: 1,
-        flexDirection: 'row',
-    },
-    minorProgressBar: {
-        paddingBottom: 0,
-        transform: [{ scaleY: 3.2 }],
-        height: 7,
-        width: 225,
-        marginTop: 6,
-        paddingRight: 10,
-        // backgroundColor: '#ff0',
     },
 });
