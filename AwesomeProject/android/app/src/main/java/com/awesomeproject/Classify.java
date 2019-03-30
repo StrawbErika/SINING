@@ -13,6 +13,8 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
+import com.facebook.react.bridge.Promise;
+import com.facebook.react.uimanager.IllegalViewOperationException;
 
 import org.tensorflow.contrib.android.TensorFlowInferenceInterface;
 
@@ -44,22 +46,25 @@ public class Classify extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public String classify(String message) throws IOException {
-        ImageSplitTest image = new ImageSplitTest();
-        Bitmap imgs[] = image.split(message);
-        ArrayList<String> topArtist = new ArrayList<String>();
-        this.readLabel();
-        int cnt = 0;
-        long startTime = System.currentTimeMillis();
-
-        while (cnt != imgs.length) {
-            this.recognizeImage(imgs[cnt]);
-            topArtist.add(this.initResultsView());
-            cnt = cnt + 1;
+    public void classify(String message, Promise promise) throws IOException, IllegalViewOperationException {
+        try {
+            ImageSplitTest image = new ImageSplitTest();
+            Bitmap imgs[] = image.split(message);
+            ArrayList<String> topArtist = new ArrayList<String>();
+            this.readLabel();
+            int cnt = 0;
+            long startTime = System.currentTimeMillis();
+            while (cnt != imgs.length) {
+                this.recognizeImage(imgs[cnt]);
+                topArtist.add(this.initResultsView());
+                cnt = cnt + 1;
+            }
+            long endTime = System.currentTimeMillis();
+            Log.d("NOOTCUTE", "Time to predict: " + (endTime - startTime) + "milliseconds");
+            promise.resolve(countArtists(topArtist));
+        } catch (IllegalViewOperationException e) {
+            promise.reject("E_LAYOUT_ERROR", e);
         }
-        long endTime = System.currentTimeMillis();
-        Log.d("NOOTCUTE", "Time to predict: " + (endTime - startTime) + "milliseconds");
-        return countArtists(topArtist);
     }
 
     public void readLabel() {

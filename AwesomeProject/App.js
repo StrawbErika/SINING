@@ -5,17 +5,19 @@ import {
   View,
   Image,
   Button,
-  TouchableOpacity
+  TouchableOpacity,
 } from 'react-native';
 import ImagePicker from "react-native-image-picker";
 
 import Classify from './Classify';
+import Loading from './Loading';
 
 export default class App extends Component {
 
   state = {
     pickedImage: null,
-    topArtist: null
+    topArtist: null,
+    isLoading: false
   }
 
   reset = () => {
@@ -42,9 +44,14 @@ export default class App extends Component {
     this.reset();
   }
   activateToast = () => {
+    console.log("YEs the code changed")
     this.setState({
-      topArtist: Classify.classify(this.state.pickedImage.uri)
-    });
+      isLoading: true
+    }, async () => {
+      this.setState({
+        topArtist: await Classify.classify(this.state.pickedImage.uri),
+      })
+    })
   }
 
   render() {
@@ -53,21 +60,36 @@ export default class App extends Component {
         <View style={styles.getStartedContainer}>
           <Text style={styles.getStartedText}>Sining </Text>
         </View>
-        <View style={styles.exitContainer}>
-          <TouchableOpacity onPress={this.resetHandler}>
-            <View style={styles.circleButton}>
-            </View>
-          </TouchableOpacity>
-        </View>
         <View style={styles.placeholder}>
           <Image source={this.state.pickedImage} style={styles.previewImage} />
         </View>
         <View style={styles.button}>
-          <Button title="Pick Image" onPress={this.pickImageHandler} />
-          {this.state.pickedImage != null && <Button title="Proceed" onPress={this.activateToast} />}
+          <TouchableOpacity onPress={this.pickImageHandler}>
+            <View style={styles.buttonTouchable}>
+              <Text style={styles.buttonText}> Pick Image</Text>
+            </View>
+          </TouchableOpacity>
+          {
+            this.state.pickedImage != null &&
 
+            <TouchableOpacity onPress={this.activateToast}>
+              <View style={styles.buttonTouchable}>
+                <Text style={styles.buttonText}> Proceed</Text>
+              </View>
 
+            </TouchableOpacity>
+          }
         </View>
+        <View style={styles.exitContainer}>
+          <TouchableOpacity onPress={this.resetHandler}>
+            <View style={styles.circleButton}>
+              <Text style={styles.exitText}> x </Text>
+            </View>
+          </TouchableOpacity>
+        </View>
+        {
+          this.state.isLoading && <Loading />
+        }
       </View>
     );
   }
@@ -105,23 +127,38 @@ const styles = StyleSheet.create({
     width: "80%",
     marginTop: 30,
     flexDirection: "row",
-    justifyContent: "space-around"
+    justifyContent: "space-around",
+  },
+  buttonTouchable: {
+    alignItems: 'center',
+    width: 100,
+    backgroundColor: '#00BCD4',
+    borderRadius: 50,
+    height: 40
+  },
+  buttonText: {
+    marginTop: 10,
+    color: 'white',
+    fontSize: 15,
   },
   previewImage: {
     width: "100%",
     height: "100%"
   },
   exitText: {
-    alignItems: 'center',
+    marginTop: 5,
+    color: 'white',
+    fontSize: 15,
   },
   exitContainer: {
     top: 140,
-    left: 280,
+    left: 290,
     position: 'absolute',
   },
   circleButton: {
-    width: 40,
-    height: 40,
+    alignItems: 'center',
+    width: 30,
+    height: 30,
     borderRadius: 150 / 2,
     backgroundColor: '#00BCD4',
   }
