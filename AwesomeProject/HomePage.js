@@ -4,22 +4,26 @@ import {
     Text,
     View,
     Image,
-    Button,
     TouchableOpacity,
+    Modal
 } from 'react-native';
+import { Overlay } from 'react-native-elements';
 import ImagePicker from "react-native-image-picker";
 import { Thread } from 'react-native-threads';
+import { Actions } from 'react-native-router-flux';
 
 import Classifier from './Classifier';
 import Classify from './Classify';
 import Loading from './Loading';
+
 
 export default class HomePage extends Component {
 
     state = {
         pickedImage: null,
         topArtist: null,
-        isLoading: false
+        isLoading: false,
+        isVisible: false
     }
 
     reset = () => {
@@ -41,23 +45,29 @@ export default class HomePage extends Component {
             }
         });
     }
-
+    goToHomePage = () => {
+        Actions.classifier({ artist: 'cabrera' })
+    }
     resetHandler = () => {
         this.reset();
     }
     activateToast = () => {
-        console.log("YEs the code changed")
+        this.load()
+        // this.setState({
+        //     topArtist: Classify.classify(this.state.pickedImage.uri),
+        //     isVisible: true
+        // })
+    }
+    load = () => {
         this.setState({
             isLoading: true
-        }, async () => {
-            this.setState({
-                topArtist: await Classify.classify(this.state.pickedImage.uri),
-                // topArtist: 'amorsolo'
-            })
         })
     }
-
+    setModalVisible(visible) {
+        this.setState({ isVisible: visible });
+    }
     render() {
+
         return (
             <View style={styles.container}>
                 <View style={styles.getStartedContainer}>
@@ -75,11 +85,10 @@ export default class HomePage extends Component {
                     {
                         this.state.pickedImage != null &&
 
-                        <TouchableOpacity onPress={this.activateToast}>
+                        <TouchableOpacity onPress={this.goToHomePage}>
                             <View style={styles.buttonTouchable}>
                                 <Text style={styles.buttonText}> Proceed</Text>
                             </View>
-
                         </TouchableOpacity>
                     }
                 </View>
@@ -90,10 +99,16 @@ export default class HomePage extends Component {
                         </View>
                     </TouchableOpacity>
                 </View>
-                {
-                    this.state.isLoading && <Loading />
-                }
-                {this.state.topArtist != null && <Classifier />}
+                <Classifier artist='amorsolo' />
+                {/* {
+                    this.state.topArtist != null &&
+                    <Overlay isVisible={true}>
+                        <TouchableOpacity onPress={() => this.setState({ isVisible: false })}>
+                            <Text> Back </Text>
+                        </TouchableOpacity>
+                    </Overlay>
+
+                } */}
             </View>
         );
     }
@@ -112,7 +127,7 @@ const styles = StyleSheet.create({
     getStartedContainer: {
         alignItems: 'center',
         marginHorizontal: 50,
-        marginTop: 80,
+        marginTop: 50,
     },
     textStyle: {
         fontWeight: "bold",
@@ -155,7 +170,7 @@ const styles = StyleSheet.create({
         fontSize: 15,
     },
     exitContainer: {
-        top: 140,
+        top: 120,
         left: 290,
         position: 'absolute',
     },

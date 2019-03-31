@@ -46,25 +46,28 @@ public class Classify extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void classify(String message, Promise promise) throws IOException, IllegalViewOperationException {
-        try {
-            ImageSplitTest image = new ImageSplitTest();
-            Bitmap imgs[] = image.split(message);
-            ArrayList<String> topArtist = new ArrayList<String>();
-            this.readLabel();
-            int cnt = 0;
-            long startTime = System.currentTimeMillis();
-            while (cnt != imgs.length) {
-                this.recognizeImage(imgs[cnt]);
-                topArtist.add(this.initResultsView());
-                cnt = cnt + 1;
-            }
-            long endTime = System.currentTimeMillis();
-            Log.d("NOOTCUTE", "Time to predict: " + (endTime - startTime) + "milliseconds");
-            promise.resolve(countArtists(topArtist));
-        } catch (IllegalViewOperationException e) {
-            promise.reject("E_LAYOUT_ERROR", e);
+    public String classify(String message) throws IOException, IllegalViewOperationException {
+        ImageSplitTest image = new ImageSplitTest();
+        Bitmap imgs[] = image.split(message);
+        ArrayList<String> topArtist = new ArrayList<String>();
+        this.readLabel();
+        int cnt = 0;
+        long startTime = System.currentTimeMillis();
+        while (cnt != imgs.length) {
+            this.recognizeImage(imgs[cnt]);
+            topArtist.add(this.initResultsView());
+            cnt = cnt + 1;
         }
+        long endTime = System.currentTimeMillis();
+        Log.d("NOOTCUTE", "Time to predict: " + (endTime - startTime) + "milliseconds");
+        Log.d("NOOTCUTE", countArtists(topArtist));
+
+        return countArtists(topArtist);
+        // try {
+        // promise.resolve(countArtists(topArtist));
+        // } catch (IllegalViewOperationException e) {
+        // promise.reject("E_LAYOUT_ERROR", e);
+        // }
     }
 
     public void readLabel() {
