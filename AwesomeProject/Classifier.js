@@ -59,7 +59,7 @@ export default class Classifier extends Component {
                                 style={styles.majorArtistImage}
                             />
                             <TouchableOpacity style={styles.helpLink} value={this.state.majorArtist[3]} onPress={this.handleClick}>
-                                <Text style={styles.helpLinkText}> {this.props.artist}</Text>
+                                <Text style={styles.helpLinkText}> {this.state.majorArtist[0]}</Text>
                             </TouchableOpacity>
                         </View>
                     </View>
