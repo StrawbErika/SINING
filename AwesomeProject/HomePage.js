@@ -7,7 +7,7 @@ import {
     TouchableOpacity,
     Modal
 } from 'react-native';
-import { Overlay } from 'react-native-elements';
+import { Overlay, Button } from 'react-native-elements';
 import ImagePicker from "react-native-image-picker";
 import { Thread } from 'react-native-threads';
 import { Actions } from 'react-native-router-flux';
@@ -20,10 +20,12 @@ import Loading from './Loading';
 export default class HomePage extends Component {
 
     state = {
-        pickedImage: null,
         topArtist: null,
+        pickedImage: null,
         isLoading: false,
-        isVisible: false
+        isVisible: false,
+        proceedShow: false,
+        showButton: true
     }
 
     reset = () => {
@@ -40,23 +42,31 @@ export default class HomePage extends Component {
                 console.log("Error", res.error);
             } else {
                 this.setState({
-                    pickedImage: { uri: res.uri }
+                    pickedImage: { uri: res.uri },
+                    proceedShow: true
                 });
             }
         });
     }
     goToHomePage = () => {
-        Actions.classifier({ artist: 'cabrera' })
+        // console.log(this.state.topArtist)
+        Actions.classifier({ artist: this.state.topArtist._55 })
+        this.setState({
+            isVisible: true,
+        })
+
     }
     resetHandler = () => {
         this.reset();
     }
     activateToast = () => {
         this.load()
-        // this.setState({
-        //     topArtist: Classify.classify(this.state.pickedImage.uri),
-        //     isVisible: true
-        // })
+        // const help = 
+        this.setState({
+            topArtist: Classify.classify(this.state.pickedImage.uri),
+            isVisible: true,
+            showButton: false
+        })
     }
     load = () => {
         this.setState({
@@ -67,7 +77,6 @@ export default class HomePage extends Component {
         this.setState({ isVisible: visible });
     }
     render() {
-
         return (
             <View style={styles.container}>
                 <View style={styles.getStartedContainer}>
@@ -76,22 +85,24 @@ export default class HomePage extends Component {
                 <View style={styles.placeholder}>
                     <Image source={this.state.pickedImage} style={styles.previewImage} />
                 </View>
-                <View style={styles.button}>
-                    <TouchableOpacity onPress={this.pickImageHandler}>
-                        <View style={styles.buttonTouchable}>
-                            <Text style={styles.buttonText}> Pick Image</Text>
-                        </View>
-                    </TouchableOpacity>
-                    {
-                        this.state.pickedImage != null &&
-
-                        <TouchableOpacity onPress={this.goToHomePage}>
+                {this.state.showButton &&
+                    <View style={styles.button}>
+                        <TouchableOpacity onPress={this.pickImageHandler}>
                             <View style={styles.buttonTouchable}>
-                                <Text style={styles.buttonText}> Proceed</Text>
+                                <Text style={styles.buttonText}> Pick Image</Text>
                             </View>
                         </TouchableOpacity>
-                    }
-                </View>
+                        {
+                            this.state.proceedShow &&
+
+                            <TouchableOpacity onPress={this.activateToast}>
+                                <View style={styles.buttonTouchable}>
+                                    <Text style={styles.buttonText}> Proceed</Text>
+                                </View>
+                            </TouchableOpacity>
+                        }
+                    </View>
+                }
                 <View style={styles.exitContainer}>
                     <TouchableOpacity onPress={this.resetHandler}>
                         <View style={styles.circleButton}>
@@ -99,16 +110,15 @@ export default class HomePage extends Component {
                         </View>
                     </TouchableOpacity>
                 </View>
-                <Classifier artist='amorsolo' />
-                {/* {
-                    this.state.topArtist != null &&
-                    <Overlay isVisible={true}>
-                        <TouchableOpacity onPress={() => this.setState({ isVisible: false })}>
-                            <Text> Back </Text>
+                {this.state.topArtist != null &&
+                    <View style={styles.button}>
+                        <TouchableOpacity onPress={this.goToHomePage}>
+                            <View style={styles.resultsTouchable}>
+                                <Text style={styles.buttonText}> Results </Text>
+                            </View>
                         </TouchableOpacity>
-                    </Overlay>
-
-                } */}
+                    </View>
+                }
             </View>
         );
     }
@@ -180,7 +190,13 @@ const styles = StyleSheet.create({
         height: 30,
         borderRadius: 150 / 2,
         backgroundColor: '#00BCD4',
+    },
+    resultsTouchable: {
+        alignItems: 'center',
+        width: 100,
+        backgroundColor: '#00BCD4',
+        borderRadius: 50,
+        height: 40
     }
-
 
 })

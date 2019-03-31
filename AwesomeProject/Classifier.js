@@ -30,6 +30,7 @@ export default class Classifier extends Component {
                 output = i
             }
         }
+        console.log(artist)
         console.log(output)
         return (output)
     }
@@ -43,7 +44,14 @@ export default class Classifier extends Component {
         }
         return (
             <View style={styles.container}>
+
                 <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
+                    <View>
+                        <TouchableOpacity onPress={goToHomePage}>
+                            <Text style={styles.backText}> back </Text>
+                        </TouchableOpacity>
+
+                    </View>
                     <View style={styles.majorArtistContainer}>
                         <View style={styles.majorArtistImageContainer}>
                             <Image
@@ -51,7 +59,7 @@ export default class Classifier extends Component {
                                 style={styles.majorArtistImage}
                             />
                             <TouchableOpacity style={styles.helpLink} value={this.state.majorArtist[3]} onPress={this.handleClick}>
-                                <Text style={styles.helpLinkText}> {this.state.majorArtist[3]}</Text>
+                                <Text style={styles.helpLinkText}> {this.state.majorArtist[0]}</Text>
                             </TouchableOpacity>
                         </View>
                     </View>
@@ -93,6 +101,7 @@ const styles = StyleSheet.create({
     },
     backText: {
         fontSize: 20,
-        marginLeft: 20
+        marginLeft: 20,
+        marginTop: 20
     },
 });
