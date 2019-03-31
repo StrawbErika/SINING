@@ -20,8 +20,8 @@ import Loading from './Loading';
 export default class HomePage extends Component {
 
     state = {
-        pickedImage: null,
         topArtist: null,
+        pickedImage: null,
         isLoading: false,
         isVisible: false
     }
@@ -46,17 +46,18 @@ export default class HomePage extends Component {
         });
     }
     goToHomePage = () => {
-        Actions.classifier({ artist: 'cabrera' })
+        // console.log(this.state.topArtist)
+        Actions.classifier({ artist: this.state.topArtist._55 })
     }
     resetHandler = () => {
         this.reset();
     }
     activateToast = () => {
         this.load()
-        // this.setState({
-        //     topArtist: Classify.classify(this.state.pickedImage.uri),
-        //     isVisible: true
-        // })
+        // const help = 
+        this.setState({
+            topArtist: Classify.classify(this.state.pickedImage.uri),
+        })
     }
     load = () => {
         this.setState({
@@ -67,7 +68,6 @@ export default class HomePage extends Component {
         this.setState({ isVisible: visible });
     }
     render() {
-
         return (
             <View style={styles.container}>
                 <View style={styles.getStartedContainer}>
@@ -85,7 +85,7 @@ export default class HomePage extends Component {
                     {
                         this.state.pickedImage != null &&
 
-                        <TouchableOpacity onPress={this.goToHomePage}>
+                        <TouchableOpacity onPress={this.activateToast}>
                             <View style={styles.buttonTouchable}>
                                 <Text style={styles.buttonText}> Proceed</Text>
                             </View>
@@ -99,16 +99,13 @@ export default class HomePage extends Component {
                         </View>
                     </TouchableOpacity>
                 </View>
-                <Classifier artist='amorsolo' />
-                {/* {
-                    this.state.topArtist != null &&
-                    <Overlay isVisible={true}>
-                        <TouchableOpacity onPress={() => this.setState({ isVisible: false })}>
-                            <Text> Back </Text>
-                        </TouchableOpacity>
-                    </Overlay>
-
-                } */}
+                <View style={styles.exitContainer}>
+                    <TouchableOpacity onPress={this.goToHomePage}>
+                        <View style={styles.circleButton}>
+                            <Text style={styles.exitText}> ANOTHER </Text>
+                        </View>
+                    </TouchableOpacity>
+                </View>
             </View>
         );
     }

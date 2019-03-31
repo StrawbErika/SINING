@@ -46,28 +46,27 @@ public class Classify extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public String classify(String message) throws IOException, IllegalViewOperationException {
-        ImageSplitTest image = new ImageSplitTest();
-        Bitmap imgs[] = image.split(message);
-        ArrayList<String> topArtist = new ArrayList<String>();
-        this.readLabel();
-        int cnt = 0;
-        long startTime = System.currentTimeMillis();
-        while (cnt != imgs.length) {
-            this.recognizeImage(imgs[cnt]);
-            topArtist.add(this.initResultsView());
-            cnt = cnt + 1;
+    public void classify(String message, Promise promise) throws IOException, IllegalViewOperationException {
+        try {
+            ImageSplitTest image = new ImageSplitTest();
+            Bitmap imgs[] = image.split(message);
+            ArrayList<String> topArtist = new ArrayList<String>();
+            this.readLabel();
+            int cnt = 0;
+            long startTime = System.currentTimeMillis();
+            while (cnt != imgs.length) {
+                this.recognizeImage(imgs[cnt]);
+                topArtist.add(this.initResultsView());
+                cnt = cnt + 1;
+            }
+            long endTime = System.currentTimeMillis();
+            Log.d("NOOTCUTE", "Time to predict: " + (endTime - startTime) + "milliseconds");
+            Log.d("NOOTCUTE", countArtists(topArtist));
+            String output = countArtists(topArtist);
+            promise.resolve(output);
+        } catch (IllegalViewOperationException e) {
+            promise.reject("E_LAYOUT_ERROR", e);
         }
-        long endTime = System.currentTimeMillis();
-        Log.d("NOOTCUTE", "Time to predict: " + (endTime - startTime) + "milliseconds");
-        Log.d("NOOTCUTE", countArtists(topArtist));
-
-        return countArtists(topArtist);
-        // try {
-        // promise.resolve(countArtists(topArtist));
-        // } catch (IllegalViewOperationException e) {
-        // promise.reject("E_LAYOUT_ERROR", e);
-        // }
     }
 
     public void readLabel() {
@@ -114,7 +113,8 @@ public class Classify extends ReactContextBaseJavaModule {
         artists.add(c);
         artists.add(f);
         artists.add(l);
-        return topArtist(artists);
+        String output = topArtist(artists);
+        return output;
     }
 
     public static String topArtist(ArrayList<Integer> artists) {
