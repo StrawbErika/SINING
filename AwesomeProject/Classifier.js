@@ -1,6 +1,5 @@
-import React from 'react';
+import React, { Component } from 'react';
 import {
-    ProgressBarAndroid,
     Image,
     ScrollView,
     StyleSheet,
@@ -9,99 +8,58 @@ import {
     View,
     Linking,
 } from 'react-native';
-// JL: 1, FA: 2, CF: 3, BC: 4
-const allArtists = [["Juan Luna", 0.5, require("./assets/images/Juan_Luna.png")], ["Fernando Amorsolo", 0.3, require("./assets/images/Fernando_Amorsolo.png")], ["Carlos Francisco", 0.15, require("./assets/images/Carlos_Francisco.png")], ["Benedicto Cabrera", 0.05, require("./assets/images/Benedicto_Cabrera.png")]];
-export default class ClassifiedScreen extends React.Component {
+import { Actions } from 'react-native-router-flux';
+
+const allArtists = [["Juan Luna", require("./assets/images/Juan_Luna.png"), "luna", "Juan_Luna"], ["Fernando Amorsolo", require("./assets/images/Fernando_Amorsolo.png"), "amorsolo", "Fernando_Amorsolo"], ["Carlos Francisco", require("./assets/images/Carlos_Francisco.png"), "francisco", "Botong_Francisco"], ["Benedicto Cabrera", require("./assets/images/Benedicto_Cabrera.png"), "cabrera", "Benedicto_Cabrera"]];
+export default class Classifier extends Component {
     static navigationOptions = {
         header: null,
     };
-    constructor() {
-        super()
 
+    constructor(props) {
+        super(props)
         this.state = {
-            majorArtist: allArtists[0],
-            artist: allArtists.slice(1)
+            majorArtist: allArtists[this.getArtistIndex(this.props.artist, allArtists)],
         }
     }
 
+    getArtistIndex = (artist, list) => {
+        output = 0
+        for (i = 0; i < list.length; i++) {
+            if (list[i][2] === artist) {
+                output = i
+            }
+        }
+        console.log(output)
+        return (output)
+    }
+    handleClick = () => {
+        const url = ('https://en.wikipedia.org/wiki/'.concat(this.state.majorArtist[3]))
+        Linking.openURL(url).catch((err) => console.error('An error occurred', err));
+    }
     render() {
+        const goToHomePage = () => {
+            Actions.homePage()
+        }
         return (
             <View style={styles.container}>
                 <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
                     <View style={styles.majorArtistContainer}>
-                        <Image
-                            source={this.state.majorArtist[2]}
-                            style={styles.majorArtistImage}
-                        />
-
-                        <TouchableOpacity style={styles.helpLink} value={this.state.majorArtist} onPress={this._handleMajorArtistPress}>
-                            <Text style={styles.helpLinkText}> {this.state.majorArtist[0]}</Text>
-                        </TouchableOpacity>
-                        <View style={styles.majorProgressContainer}>
-                            <View>
-                                <ProgressBarAndroid
-                                    styleAttr="Horizontal"
-                                    indeterminate={false}
-                                    progress={this.state.majorArtist[1]}
-                                    color="#000"
-                                    style={styles.majorProgressBar}
-                                />
-                            </View>
-                            <View >
-                                <Text> {this.state.majorArtist[1] * 100}% </Text>
-                            </View>
+                        <View style={styles.majorArtistImageContainer}>
+                            <Image
+                                source={this.state.majorArtist[1]}
+                                style={styles.majorArtistImage}
+                            />
+                            <TouchableOpacity style={styles.helpLink} value={this.state.majorArtist[3]} onPress={this.handleClick}>
+                                <Text style={styles.helpLinkText}> {this.state.majorArtist[3]}</Text>
+                            </TouchableOpacity>
                         </View>
                     </View>
-                    <View style={styles.minorArtistContainer}>
-                        {
-                            this.state.artist.map((artistList, index) => {
-                                return (
-                                    <View style={styles.minorArtists} key={index}>
-                                        <Image
-                                            source={artistList[2]}
-                                            style={styles.minorArtistImage}
-                                        />
-
-                                        <View style={styles.artistsProgressContainer}>
-                                            <View style={styles.artistName}>
-                                                <Text> {artistList[0]} </Text>
-                                            </View>
-
-                                            <View style={styles.minorProgressContainer}>
-                                                <View>
-                                                    <ProgressBarAndroid
-                                                        styleAttr="Horizontal"
-                                                        indeterminate={false}
-                                                        progress={artistList[1]}
-                                                        color="#000"
-                                                        style={styles.minorProgressBar}
-                                                    />
-                                                </View>
-                                                <View >
-                                                    <Text> {artistList[1] * 100}% </Text>
-                                                </View>
-                                            </View>
-
-                                        </View>
-                                    </View>
-
-                                )
-                            })
-                        }
-                    </View>
-
                 </ScrollView>
             </View >
         );
     }
 }
-_handleMajorArtistPress = (e) => {
-    Linking.openURL('https://google.com')
-    // console.log("HEY")
-    // WebBrowser.openBrowserAsync(
-    //     'https://en.wikipedia.org/wiki/Juan_Luna'
-    // );
-};
 
 const styles = StyleSheet.create({
     container: {
@@ -110,79 +68,31 @@ const styles = StyleSheet.create({
     },
     majorArtistContainer: {
         alignItems: 'center',
-        marginTop: 30,
+        marginTop: 85,
         marginBottom: 10,
-        // backgroundColor: '#ff0',
+        // backgroundColor: '#0ff',
+    },
+    majorArtistImageContainer: {
+        width: 300,
+        resizeMode: 'contain',
+        alignItems: 'center',
+        // backgroundColor: '#0f0',
     },
     majorArtistImage: {
-        width: 150,
-        height: 150,
+        width: 250,
+        height: 250,
         resizeMode: 'contain',
         marginTop: 3,
-        marginLeft: -10,
+        // marginLeft: -10,
     },
     helpLink: {
-        marginVertical: 5,
+        marginVertical: 20,
     },
     helpLinkText: {
+        fontSize: 30,
+    },
+    backText: {
         fontSize: 20,
-    },
-    majorProgressContainer: {
-        flex: 1,
-        flexDirection: 'row',
-        width: 330
-    },
-    majorProgressBar: {
-        paddingBottom: 0,
-        transform: [{ scaleY: 3.2 }],
-        height: 7,
-        width: 310,
-        marginTop: 6,
-        paddingRight: 10,
-    },
-    minorArtistContainer: {
-        flex: 1,
-        flexDirection: 'column',
-        alignItems: 'center',
-        marginTop: 10,
-        marginBottom: 20,
-        // backgroundColor: '#0ff',x
-    },
-    minorArtists: {
-        flex: 1,
-        flexDirection: 'row',
-        alignItems: 'center',
-        marginBottom: 10,
-    },
-    minorArtistImage: {
-        width: 70,
-        height: 70,
-        resizeMode: 'contain',
-        marginTop: 3,
-        marginRight: 5,
-        marginLeft: 15,
-    },
-    artistsProgressContainer: {
-        flex: 1,
-        flexDirection: 'column',
-        marginLeft: 8,
-    },
-    artistName: {
-        // backgroundColor: '#0f0',
-        marginTop: 5,
-        marginBottom: 32,
-    },
-    minorProgressContainer: {
-        flex: 1,
-        flexDirection: 'row',
-    },
-    minorProgressBar: {
-        paddingBottom: 0,
-        transform: [{ scaleY: 3.2 }],
-        height: 7,
-        width: 225,
-        marginTop: 6,
-        paddingRight: 10,
-        // backgroundColor: '#ff0',
+        marginLeft: 20
     },
 });

@@ -3,6 +3,7 @@ package com.awesomeproject;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 import com.imagepicker.ImagePickerPackage;
 import org.reactnative.camera.RNCameraPackage;
 import com.facebook.react.ReactNativeHost;
@@ -25,8 +26,8 @@ public class MainApplication extends Application implements ReactApplication {
 
     @Override
     protected List<ReactPackage> getPackages() {
-      return Arrays.<ReactPackage>asList(new MainReactPackage(), new ImagePickerPackage(), new RNCameraPackage(),
-          new CustomToastPackage(), new CustomClassifyPackage()
+      return Arrays.<ReactPackage>asList(new MainReactPackage(), new RNGestureHandlerPackage(),
+          new ImagePickerPackage(), new RNCameraPackage(), new CustomToastPackage(), new CustomClassifyPackage()
 
       );
     }

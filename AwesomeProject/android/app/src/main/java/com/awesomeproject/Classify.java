@@ -13,6 +13,8 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
+import com.facebook.react.bridge.Promise;
+import com.facebook.react.uimanager.IllegalViewOperationException;
 
 import org.tensorflow.contrib.android.TensorFlowInferenceInterface;
 
@@ -44,14 +46,13 @@ public class Classify extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public String classify(String message) throws IOException {
+    public String classify(String message) throws IOException, IllegalViewOperationException {
         ImageSplitTest image = new ImageSplitTest();
         Bitmap imgs[] = image.split(message);
         ArrayList<String> topArtist = new ArrayList<String>();
         this.readLabel();
         int cnt = 0;
         long startTime = System.currentTimeMillis();
-
         while (cnt != imgs.length) {
             this.recognizeImage(imgs[cnt]);
             topArtist.add(this.initResultsView());
@@ -59,7 +60,14 @@ public class Classify extends ReactContextBaseJavaModule {
         }
         long endTime = System.currentTimeMillis();
         Log.d("NOOTCUTE", "Time to predict: " + (endTime - startTime) + "milliseconds");
+        Log.d("NOOTCUTE", countArtists(topArtist));
+
         return countArtists(topArtist);
+        // try {
+        // promise.resolve(countArtists(topArtist));
+        // } catch (IllegalViewOperationException e) {
+        // promise.reject("E_LAYOUT_ERROR", e);
+        // }
     }
 
     public void readLabel() {

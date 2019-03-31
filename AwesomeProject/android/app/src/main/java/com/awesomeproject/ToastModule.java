@@ -41,15 +41,8 @@ public class ToastModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void show(String message, int duration) throws IOException {
         Log.d("NOOTCUTE", message);
-
         ImageSplitTest image = new ImageSplitTest();
         Bitmap imgs[] = image.split(message);
-        // Toast.makeText(getReactApplicationContext(), message, duration).show();
         ImageView view = new ImageView(getReactApplicationContext());
-        // Toast t = new Toast(getReactApplicationContext());
-        // Log.d("NOOTCUTE", Integer.toString(imgs.length));
-        // view.setImageBitmap(imgs[3]);
-        // t.setView(view);
-        // t.show();
     }
 }
