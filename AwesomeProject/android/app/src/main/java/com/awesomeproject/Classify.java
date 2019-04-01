@@ -28,7 +28,6 @@ public class Classify extends ReactContextBaseJavaModule {
     private ReactApplicationContext reactContext;
     private ArrayList<String> artistClasses;
     private TensorFlowInferenceInterface inferenceInterface;
-    private final String modelName = "output_graph.pb";
     private final String input = "Placeholder";
     private final String output = "final_result";
     private final int numClasses = 4;
@@ -55,7 +54,9 @@ public class Classify extends ReactContextBaseJavaModule {
             int cnt = 0;
             long startTime = System.currentTimeMillis();
             while (cnt != imgs.length) {
-                this.recognizeImage(imgs[cnt]);
+                String modelFile = Integer.toString(cnt) + ".pb";
+                Log.d("NOOTCUTE", modelFile);
+                this.recognizeImage(imgs[cnt], modelFile);
                 topArtist.add(this.initResultsView());
                 cnt = cnt + 1;
             }
@@ -146,7 +147,7 @@ public class Classify extends ReactContextBaseJavaModule {
         return artist;
     }
 
-    public void recognizeImage(Bitmap croppedBmp) { //
+    public void recognizeImage(Bitmap croppedBmp, String modelName) { //
         Bitmap scaledBmp = Bitmap.createScaledBitmap(croppedBmp, inputSize, inputSize, false);
         int[] intValues = new int[inputSize * inputSize];
         float[] floatValues = new float[inputSize * inputSize * 3];
