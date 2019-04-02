@@ -7,6 +7,7 @@ import {
     TouchableOpacity,
     Dimensions
 } from 'react-native';
+import { Icon } from 'react-native-elements'
 import ImagePicker from "react-native-image-picker";
 import { Thread } from 'react-native-threads';
 import { Actions } from 'react-native-router-flux';
@@ -20,8 +21,7 @@ export default class HomePage extends Component {
     state = {
         topArtist: null,
         pickedImage: null,
-        isLoading: true,
-        isVisible: false,
+        isLoading: this.props.load,
         proceedShow: false,
         showButton: true
     }
@@ -62,8 +62,8 @@ export default class HomePage extends Component {
         });
     }
     goToHomePage = () => {
-        // console.log(this.state.topArtist)
-        Actions.classifier({ artist: this.state.topArtist._55 })
+        // Actions.classifier({ artist: this.state.topArtist._55 })
+        Actions.classifier({ artist: "amorsolo" })
         this.setState({
             isVisible: true,
         })
@@ -73,8 +73,6 @@ export default class HomePage extends Component {
         this.reset();
     }
     activateToast = () => {
-        this.load()
-        // const help = 
         this.setState({
             topArtist: Classify.classify(this.state.pickedImage.uri),
             isVisible: true,
@@ -98,7 +96,8 @@ export default class HomePage extends Component {
                 </View>
                 {this.state.showButton &&
                     <View style={styles.button}>
-                        <TouchableOpacity onPress={this.pickImageHandler}>
+                        {/* <TouchableOpacity onPress={this.pickImageHandler}> */}
+                        <TouchableOpacity onPress={this.goToHomePage}>
                             <View style={styles.buttonTouchable}>
                                 <Text style={styles.buttonText}> Pick Image</Text>
                             </View>
@@ -117,7 +116,9 @@ export default class HomePage extends Component {
                 <View style={styles.exitContainer}>
                     <TouchableOpacity onPress={this.resetHandler}>
                         <View style={styles.circleButton}>
-                            <Text style={styles.exitText}> x </Text>
+                            <View style={styles.icon}>
+                                <Icon color="white" size={17} name="delete" type="antdesign" />
+                            </View>
                         </View>
                     </TouchableOpacity>
                 </View>
@@ -183,15 +184,13 @@ const styles = StyleSheet.create({
         width: "100%",
         height: "100%"
     },
-    exitText: {
-        marginTop: 5,
-        color: 'white',
-        fontSize: 15,
-    },
     exitContainer: {
         top: 170,
         left: 290,
         position: 'absolute',
+    },
+    icon: {
+        marginTop: 5
     },
     circleButton: {
         alignItems: 'center',
