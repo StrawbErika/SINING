@@ -96,8 +96,8 @@ export default class HomePage extends Component {
                 </View>
                 {this.state.showButton &&
                     <View style={styles.button}>
-                        {/* <TouchableOpacity onPress={this.pickImageHandler}> */}
-                        <TouchableOpacity onPress={this.goToHomePage}>
+                        <TouchableOpacity onPress={this.pickImageHandler}>
+                        {/* <TouchableOpacity onPress={this.goToHomePage}> */}
                             <View style={styles.buttonTouchable}>
                                 <Text style={styles.buttonText}> Pick Image</Text>
                             </View>
