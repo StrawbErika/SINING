@@ -10,7 +10,7 @@ const Routes = () => (
         <Scene key="root">
             {/* <Scene key="home" component={Home} title="Home" initial={true} /> */}
             <Scene key="classifier" component={Classifier} title="Classifier" />
-            <Scene key="homePage" component={HomePage} initial={true} />
+            <Scene key="homePage" component={HomePage} initial={true} hideNavBar={true} />
         </Scene>
     </Router>
 )

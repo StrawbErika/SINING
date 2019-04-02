@@ -5,14 +5,12 @@ import {
     View,
     Image,
     TouchableOpacity,
-    Modal
+    Dimensions
 } from 'react-native';
-import { Overlay, Button } from 'react-native-elements';
 import ImagePicker from "react-native-image-picker";
 import { Thread } from 'react-native-threads';
 import { Actions } from 'react-native-router-flux';
 
-import Classifier from './Classifier';
 import Classify from './Classify';
 import Loading from './Loading';
 
@@ -22,12 +20,27 @@ export default class HomePage extends Component {
     state = {
         topArtist: null,
         pickedImage: null,
-        isLoading: false,
+        isLoading: true,
         isVisible: false,
         proceedShow: false,
         showButton: true
     }
 
+    performTimeConsumingTask = async () => {
+        return new Promise((resolve) =>
+            setTimeout(
+                () => { resolve('result') },
+                3500
+            )
+        );
+    }
+    async componentDidMount() {
+        const data = await this.performTimeConsumingTask();
+
+        if (data !== null) {
+            this.setState({ isLoading: false });
+        }
+    }
     reset = () => {
         this.setState({
             pickedImage: null
@@ -68,15 +81,13 @@ export default class HomePage extends Component {
             showButton: false
         })
     }
-    load = () => {
-        this.setState({
-            isLoading: true
-        })
-    }
     setModalVisible(visible) {
         this.setState({ isVisible: visible });
     }
     render() {
+        if (this.state.isLoading) {
+            return <Loading />;
+        }
         return (
             <View style={styles.container}>
                 <View style={styles.getStartedContainer}>
@@ -126,31 +137,29 @@ export default class HomePage extends Component {
 
 const styles = StyleSheet.create({
     container: {
-        alignItems: "center"
+        alignItems: "center",
+        backgroundColor: '#ffff',
+        height: Dimensions.get('window').height,
     },
     getStartedText: {
-        fontSize: 50,
+        fontFamily: "AnjelScript",
+        fontSize: 100,
         color: 'rgba(96,100,109, 1)',
-        lineHeight: 50,
+        lineHeight: 100,
         textAlign: 'center',
+        color: '#00BCD4',
     },
     getStartedContainer: {
+        width: "100%",
         alignItems: 'center',
-        marginHorizontal: 50,
-        marginTop: 50,
-    },
-    textStyle: {
-        fontWeight: "bold",
-        fontSize: 30,
-        textAlign: "center",
-        color: "red",
-        marginTop: 10
+        marginLeft: 45,
+        marginTop: 80,
     },
     placeholder: {
         backgroundColor: "#eee",
         width: 250,
         height: 250,
-        marginTop: 30,
+        marginTop: 0,
     },
     button: {
         width: "80%",
@@ -180,7 +189,7 @@ const styles = StyleSheet.create({
         fontSize: 15,
     },
     exitContainer: {
-        top: 120,
+        top: 170,
         left: 290,
         position: 'absolute',
     },
