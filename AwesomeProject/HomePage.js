@@ -62,8 +62,8 @@ export default class HomePage extends Component {
         });
     }
     goToHomePage = () => {
-        // Actions.classifier({ artist: this.state.topArtist._55 })
-        Actions.classifier({ artist: "amorsolo" })
+        Actions.classifier({ artist: this.state.topArtist._55 })
+        // Actions.classifier({ artist: "amorsolo" })
         this.setState({
             isVisible: true,
         })
@@ -97,7 +97,7 @@ export default class HomePage extends Component {
                 {this.state.showButton &&
                     <View style={styles.button}>
                         <TouchableOpacity onPress={this.pickImageHandler}>
-                        {/* <TouchableOpacity onPress={this.goToHomePage}> */}
+                            {/* <TouchableOpacity onPress={this.goToHomePage}> */}
                             <View style={styles.buttonTouchable}>
                                 <Text style={styles.buttonText}> Pick Image</Text>
                             </View>

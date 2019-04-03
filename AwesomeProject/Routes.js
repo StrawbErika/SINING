@@ -4,7 +4,6 @@ import Classifier from './Classifier.js'
 import HomePage from './HomePage.js'
 
 
-import Home from './Home.js'
 const Routes = () => (
     <Router>
         <Scene key="root">
