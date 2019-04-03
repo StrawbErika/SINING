@@ -169,3 +169,14 @@ const styles = StyleSheet.create({
 
 
 })
+
+
+    private final String modelName0 = "0.pb";
+    private final String modelName1 = "1.pb";
+    private final String modelName2 = "2.pb";
+    private final String modelName3 = "3.pb";
+    private final String modelName4 = "4.pb";
+    private final String modelName5 = "5.pb";
+    private final String modelName6 = "6.pb";
+    private final String modelName7 = "7.pb";
+    private final String modelName8 = "8.pb";

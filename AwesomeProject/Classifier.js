@@ -8,6 +8,7 @@ import {
     View,
     Linking,
 } from 'react-native';
+import { Icon } from 'react-native-elements'
 import { Actions } from 'react-native-router-flux';
 
 const allArtists = [["Juan Luna", require("./assets/images/Juan_Luna.png"), "luna", "Juan_Luna"], ["Fernando Amorsolo", require("./assets/images/Fernando_Amorsolo.png"), "amorsolo", "Fernando_Amorsolo"], ["Carlos Francisco", require("./assets/images/Carlos_Francisco.png"), "francisco", "Botong_Francisco"], ["Benedicto Cabrera", require("./assets/images/Benedicto_Cabrera.png"), "cabrera", "Benedicto_Cabrera"]];
@@ -40,17 +41,19 @@ export default class Classifier extends Component {
     }
     render() {
         const goToHomePage = () => {
-            Actions.homePage()
+            Actions.homePage({ load: false })
         }
         return (
             <View style={styles.container}>
 
                 <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-                    <View>
+                    <View style={styles.backText} >
                         <TouchableOpacity onPress={goToHomePage}>
-                            <Text style={styles.backText}> back </Text>
+                            <Icon size={30} name="left" color='#00BCD4' type="antdesign" />
                         </TouchableOpacity>
-
+                    </View>
+                    <View>
+                        <Text style={styles.results}> Artist</Text>
                     </View>
                     <View style={styles.majorArtistContainer}>
                         <View style={styles.majorArtistImageContainer}>
@@ -76,7 +79,7 @@ const styles = StyleSheet.create({
     },
     majorArtistContainer: {
         alignItems: 'center',
-        marginTop: 85,
+        marginTop: -10,
         marginBottom: 10,
         // backgroundColor: '#0ff',
     },
@@ -93,15 +96,24 @@ const styles = StyleSheet.create({
         marginTop: 3,
         // marginLeft: -10,
     },
+    results: {
+        fontFamily: "AnjelScript",
+        fontSize: 100,
+        lineHeight: 100,
+        color: '#00BCD4',
+        marginLeft: 25,
+        marginTop: 80
+    },
     helpLink: {
-        marginVertical: 20,
+        marginVertical: 10,
     },
     helpLinkText: {
         fontSize: 30,
     },
     backText: {
         fontSize: 20,
-        marginLeft: 20,
-        marginTop: 20
+        position: 'absolute',
+        marginTop: 30,
+        marginLeft: 25
     },
 });

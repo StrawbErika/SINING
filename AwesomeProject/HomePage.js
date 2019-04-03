@@ -5,14 +5,13 @@ import {
     View,
     Image,
     TouchableOpacity,
-    Modal
+    Dimensions
 } from 'react-native';
-import { Overlay, Button } from 'react-native-elements';
+import { Icon } from 'react-native-elements'
 import ImagePicker from "react-native-image-picker";
 import { Thread } from 'react-native-threads';
 import { Actions } from 'react-native-router-flux';
 
-import Classifier from './Classifier';
 import Classify from './Classify';
 import Loading from './Loading';
 
@@ -22,12 +21,26 @@ export default class HomePage extends Component {
     state = {
         topArtist: null,
         pickedImage: null,
-        isLoading: false,
-        isVisible: false,
+        isLoading: this.props.load,
         proceedShow: false,
         showButton: true
     }
 
+    performTimeConsumingTask = async () => {
+        return new Promise((resolve) =>
+            setTimeout(
+                () => { resolve('result') },
+                3500
+            )
+        );
+    }
+    async componentDidMount() {
+        const data = await this.performTimeConsumingTask();
+
+        if (data !== null) {
+            this.setState({ isLoading: false });
+        }
+    }
     reset = () => {
         this.setState({
             pickedImage: null
@@ -49,8 +62,8 @@ export default class HomePage extends Component {
         });
     }
     goToHomePage = () => {
-        // console.log(this.state.topArtist)
-        Actions.classifier({ artist: this.state.topArtist._55 })
+        // Actions.classifier({ artist: this.state.topArtist._55 })
+        Actions.classifier({ artist: "amorsolo" })
         this.setState({
             isVisible: true,
         })
@@ -60,23 +73,19 @@ export default class HomePage extends Component {
         this.reset();
     }
     activateToast = () => {
-        this.load()
-        // const help = 
         this.setState({
             topArtist: Classify.classify(this.state.pickedImage.uri),
             isVisible: true,
             showButton: false
         })
     }
-    load = () => {
-        this.setState({
-            isLoading: true
-        })
-    }
     setModalVisible(visible) {
         this.setState({ isVisible: visible });
     }
     render() {
+        if (this.state.isLoading) {
+            return <Loading />;
+        }
         return (
             <View style={styles.container}>
                 <View style={styles.getStartedContainer}>
@@ -88,6 +97,7 @@ export default class HomePage extends Component {
                 {this.state.showButton &&
                     <View style={styles.button}>
                         <TouchableOpacity onPress={this.pickImageHandler}>
+                        {/* <TouchableOpacity onPress={this.goToHomePage}> */}
                             <View style={styles.buttonTouchable}>
                                 <Text style={styles.buttonText}> Pick Image</Text>
                             </View>
@@ -106,7 +116,9 @@ export default class HomePage extends Component {
                 <View style={styles.exitContainer}>
                     <TouchableOpacity onPress={this.resetHandler}>
                         <View style={styles.circleButton}>
-                            <Text style={styles.exitText}> x </Text>
+                            <View style={styles.icon}>
+                                <Icon color="white" size={17} name="delete" type="antdesign" />
+                            </View>
                         </View>
                     </TouchableOpacity>
                 </View>
@@ -126,31 +138,29 @@ export default class HomePage extends Component {
 
 const styles = StyleSheet.create({
     container: {
-        alignItems: "center"
+        alignItems: "center",
+        backgroundColor: '#ffff',
+        height: Dimensions.get('window').height,
     },
     getStartedText: {
-        fontSize: 50,
+        fontFamily: "AnjelScript",
+        fontSize: 100,
         color: 'rgba(96,100,109, 1)',
-        lineHeight: 50,
+        lineHeight: 100,
         textAlign: 'center',
+        color: '#00BCD4',
     },
     getStartedContainer: {
+        width: "100%",
         alignItems: 'center',
-        marginHorizontal: 50,
-        marginTop: 50,
-    },
-    textStyle: {
-        fontWeight: "bold",
-        fontSize: 30,
-        textAlign: "center",
-        color: "red",
-        marginTop: 10
+        marginLeft: 45,
+        marginTop: 80,
     },
     placeholder: {
         backgroundColor: "#eee",
         width: 250,
         height: 250,
-        marginTop: 30,
+        marginTop: 0,
     },
     button: {
         width: "80%",
@@ -174,15 +184,13 @@ const styles = StyleSheet.create({
         width: "100%",
         height: "100%"
     },
-    exitText: {
-        marginTop: 5,
-        color: 'white',
-        fontSize: 15,
-    },
     exitContainer: {
-        top: 120,
+        top: 170,
         left: 290,
         position: 'absolute',
+    },
+    icon: {
+        marginTop: 5
     },
     circleButton: {
         alignItems: 'center',
