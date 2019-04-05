@@ -30,7 +30,8 @@ export default class HomePage extends Component {
         return new Promise((resolve) =>
             setTimeout(
                 () => { resolve('result') },
-                3500
+                100
+                // 3500
             )
         );
     }
@@ -62,7 +63,7 @@ export default class HomePage extends Component {
         });
     }
     goToHomePage = () => {
-        console.log(this.state.topArtist._55)
+        // console.log(this.state.topArtist._55)
         Actions.classifier({ artist: this.state.topArtist._55 })
         // Actions.classifier({ artist: "amorsolo" })
         this.setState({

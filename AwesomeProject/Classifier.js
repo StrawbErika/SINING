@@ -6,7 +6,8 @@ import {
     Text,
     TouchableOpacity,
     View,
-    Linking,
+    Dimensions,
+    Linking
 } from 'react-native';
 import { Icon } from 'react-native-elements'
 import { Actions } from 'react-native-router-flux';
@@ -20,10 +21,14 @@ export default class Classifier extends Component {
     constructor(props) {
         super(props)
         const finalArray = this.splitString(this.props.artist)
-        console.log(finalArray)
+        // console.log(finalArray)
         this.state = {
             // majorArtist: allArtists[this.getArtistIndex(this.props.artist, allArtists)],
             majorArtist: finalArray[0],
+            minorArtists: finalArray.slice(1)
+            // majorArtist: allArtists[0],
+            // minorArtists: allArtists.slice(1)
+
         }
     }
 
@@ -40,9 +45,7 @@ export default class Classifier extends Component {
         var array = string.split(" ")
         var wholeArray = []
         for (var i = 0; i < array.length; i = i + 2) {
-            if (parseInt(array[i + 1], 10) != 0) {
-                wholeArray.push({ artist: array[i], count: parseInt(array[i + 1], 10) })
-            }
+            wholeArray.push({ artist: array[i], count: parseInt(array[i + 1], 10) })
         }
         wholeArray.sort((a, b) => (a.count < b.count) ? 1 : -1)
         return this.mergeList(wholeArray, allArtists)
@@ -60,9 +63,8 @@ export default class Classifier extends Component {
         return official
     }
     handleClick = () => {
-        this.splitString(this.props.artist)
-        // const url = ('https://en.wikipedia.org/wiki/'.concat(this.state.majorArtist[3]))
-        // Linking.openURL(url).catch((err) => console.error('An error occurred', err));
+        const url = ('https://en.wikipedia.org/wiki/'.concat(this.state.majorArtist[3]))
+        Linking.openURL(url).catch((err) => console.error('An error occurred', err));
     }
     render() {
         const goToHomePage = () => {
@@ -77,9 +79,6 @@ export default class Classifier extends Component {
                             <Icon size={30} name="left" color='#00BCD4' type="antdesign" />
                         </TouchableOpacity>
                     </View>
-                    <View>
-                        <Text style={styles.results}> Artist</Text>
-                    </View>
                     <View style={styles.majorArtistContainer}>
                         <View style={styles.majorArtistImageContainer}>
                             <Image
@@ -90,6 +89,25 @@ export default class Classifier extends Component {
                                 <Text style={styles.helpLinkText}> {this.state.majorArtist[0]}</Text>
                             </TouchableOpacity>
                         </View>
+                    </View>
+                    <View style={styles.minorArtistContainer}>
+                        {
+                            this.state.minorArtists.map((artistList, index) => {
+                                return (
+                                    <View style={styles.artistContainer} key={index}>
+                                        <Image
+                                            source={artistList[1]}
+                                            style={styles.minorArtistImage}
+                                        />
+                                        <View>
+                                            <Text style={styles.artistText} > {artistList[0]}</Text>
+                                            <Text style={styles.numberText} > {artistList[4]}/9</Text>
+                                        </View>
+                                    </View>
+
+                                )
+                            })
+                        }
                     </View>
                 </ScrollView>
             </View >
@@ -104,8 +122,8 @@ const styles = StyleSheet.create({
     },
     majorArtistContainer: {
         alignItems: 'center',
-        marginTop: -10,
-        marginBottom: 10,
+        marginTop: 50,
+        // marginBottom: 10,
         // backgroundColor: '#0ff',
     },
     majorArtistImageContainer: {
@@ -115,30 +133,59 @@ const styles = StyleSheet.create({
         // backgroundColor: '#0f0',
     },
     majorArtistImage: {
-        width: 250,
-        height: 250,
+        width: 170,
+        height: 170,
         resizeMode: 'contain',
         marginTop: 3,
         // marginLeft: -10,
     },
     results: {
         fontFamily: "AnjelScript",
-        fontSize: 100,
-        lineHeight: 100,
+        fontSize: 80,
+        lineHeight: 80,
         color: '#00BCD4',
-        marginLeft: 25,
-        marginTop: 80
+        marginLeft: 70,
+        marginTop: 60
     },
     helpLink: {
-        marginVertical: 10,
+        marginVertical: 5,
     },
     helpLinkText: {
-        fontSize: 30,
+        fontSize: 45,
+        fontFamily: "AnjelScript",
+        color: '#00BCD4',
     },
     backText: {
         fontSize: 20,
         position: 'absolute',
-        marginTop: 30,
+        marginTop: 20,
         marginLeft: 25
     },
+    minorArtistImage: {
+        width: 80,
+        height: 80,
+        resizeMode: 'contain',
+        marginTop: 10,
+        // marginLeft: -10,
+    },
+    minorArtistContainer: {
+        width: Dimensions.get('window').width,
+        resizeMode: 'contain',
+        // alignItems: 'center',
+        marginLeft: 30,
+    },
+    artistContainer: {
+        flex: 1,
+        flexDirection: 'row'
+    },
+    artistText: {
+        fontFamily: "CaviarDreams",
+        fontSize: 20,
+        marginTop: 15
+    },
+    numberText: {
+        fontFamily: "CaviarDreams",
+        fontSize: 20,
+        marginTop: 10
+    }
 });
