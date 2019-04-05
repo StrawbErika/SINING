@@ -19,8 +19,11 @@ export default class Classifier extends Component {
 
     constructor(props) {
         super(props)
+        const finalArray = this.splitString(this.props.artist)
+        console.log(finalArray)
         this.state = {
-            majorArtist: allArtists[this.getArtistIndex(this.props.artist, allArtists)],
+            // majorArtist: allArtists[this.getArtistIndex(this.props.artist, allArtists)],
+            majorArtist: finalArray[0],
         }
     }
 
@@ -31,13 +34,35 @@ export default class Classifier extends Component {
                 output = i
             }
         }
-        console.log(artist)
-        console.log(output)
         return (output)
     }
+    splitString = (string) => {
+        var array = string.split(" ")
+        var wholeArray = []
+        for (var i = 0; i < array.length; i = i + 2) {
+            if (parseInt(array[i + 1], 10) != 0) {
+                wholeArray.push({ artist: array[i], count: parseInt(array[i + 1], 10) })
+            }
+        }
+        wholeArray.sort((a, b) => (a.count < b.count) ? 1 : -1)
+        return this.mergeList(wholeArray, allArtists)
+    }
+    mergeList = (obj, list) => {
+        var official = []
+        for (var j = 0; j < obj.length; j = j + 1) {
+            for (var i = 0; i < list.length; i = i + 1) {
+                if (list[i][2] == obj[j].artist) {
+                    list[i].push(obj[j].count)
+                    official.push(list[i])
+                }
+            }
+        }                //2
+        return official
+    }
     handleClick = () => {
-        const url = ('https://en.wikipedia.org/wiki/'.concat(this.state.majorArtist[3]))
-        Linking.openURL(url).catch((err) => console.error('An error occurred', err));
+        this.splitString(this.props.artist)
+        // const url = ('https://en.wikipedia.org/wiki/'.concat(this.state.majorArtist[3]))
+        // Linking.openURL(url).catch((err) => console.error('An error occurred', err));
     }
     render() {
         const goToHomePage = () => {

@@ -54,16 +54,15 @@ public class Classify extends ReactContextBaseJavaModule {
             int cnt = 0;
             long startTime = System.currentTimeMillis();
             while (cnt != imgs.length) {
-                String modelFile = Integer.toString(cnt) + ".pb";
-                Log.d("NOOTCUTE", modelFile);
-                this.recognizeImage(imgs[cnt], modelFile);
+                // String modelFile = Integer.toString(cnt) + ".pb";
+                this.recognizeImage(imgs[cnt], "1.pb");
                 topArtist.add(this.initResultsView());
                 cnt = cnt + 1;
             }
             long endTime = System.currentTimeMillis();
             Log.d("NOOTCUTE", "Time to predict: " + (endTime - startTime) + "milliseconds");
-            Log.d("NOOTCUTE", countArtists(topArtist));
             String output = countArtists(topArtist);
+            Log.d("NOOTCUTE", output);
             promise.resolve(output);
         } catch (IllegalViewOperationException e) {
             promise.reject("E_LAYOUT_ERROR", e);
@@ -114,7 +113,9 @@ public class Classify extends ReactContextBaseJavaModule {
         artists.add(c);
         artists.add(f);
         artists.add(l);
-        String output = topArtist(artists);
+        // String output = topArtist(artists);
+        String output = "amorsolo " + Integer.toString(artists.get(0)) + " cabrera " + Integer.toString(artists.get(1))
+                + " francisco " + Integer.toString(artists.get(2)) + " luna " + Integer.toString(artists.get(3));
         return output;
     }
 

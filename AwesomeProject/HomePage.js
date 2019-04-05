@@ -62,6 +62,7 @@ export default class HomePage extends Component {
         });
     }
     goToHomePage = () => {
+        console.log(this.state.topArtist._55)
         Actions.classifier({ artist: this.state.topArtist._55 })
         // Actions.classifier({ artist: "amorsolo" })
         this.setState({
