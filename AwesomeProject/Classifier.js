@@ -20,14 +20,13 @@ export default class Classifier extends Component {
 
     constructor(props) {
         super(props)
-        const finalArray = this.splitString(this.props.artist)
-        // console.log(finalArray)
+        var finalArray = []
+        finalArray = this.splitString(this.props.artist)
+        console.log(finalArray)
+        console.log(allArtists)
         this.state = {
-            // majorArtist: allArtists[this.getArtistIndex(this.props.artist, allArtists)],
             majorArtist: finalArray[0],
             minorArtists: finalArray.slice(1)
-            // majorArtist: allArtists[0],
-            // minorArtists: allArtists.slice(1)
 
         }
     }
@@ -55,8 +54,13 @@ export default class Classifier extends Component {
         for (var j = 0; j < obj.length; j = j + 1) {
             for (var i = 0; i < list.length; i = i + 1) {
                 if (list[i][2] == obj[j].artist) {
-                    list[i].push(obj[j].count)
-                    official.push(list[i])
+                    var newList = []
+                    newList.push(list[i][0])
+                    newList.push(list[i][1])
+                    newList.push(list[i][2])
+                    newList.push(list[i][3])
+                    newList.push(obj[j].count)
+                    official.push(newList)
                 }
             }
         }                //2
@@ -85,9 +89,12 @@ export default class Classifier extends Component {
                                 source={this.state.majorArtist[1]}
                                 style={styles.majorArtistImage}
                             />
-                            <TouchableOpacity style={styles.helpLink} value={this.state.majorArtist[3]} onPress={this.handleClick}>
-                                <Text style={styles.helpLinkText}> {this.state.majorArtist[0]}</Text>
-                            </TouchableOpacity>
+                            <View style={styles.artistTextContainer}>
+                                <TouchableOpacity style={styles.helpLink} value={this.state.majorArtist[3]} onPress={this.handleClick}>
+                                    <Text style={styles.helpLinkText}> {this.state.majorArtist[0]}</Text>
+                                </TouchableOpacity>
+
+                            </View>
                         </View>
                     </View>
                     <View style={styles.minorArtistContainer}>
@@ -147,11 +154,16 @@ const styles = StyleSheet.create({
         marginLeft: 70,
         marginTop: 60
     },
+    artistTextContainer: {
+        width: Dimensions.get('window').width,
+        alignItems: 'center',
+        resizeMode: 'contain',
+    },
     helpLink: {
         marginVertical: 5,
     },
     helpLinkText: {
-        fontSize: 45,
+        fontSize: 40,
         fontFamily: "AnjelScript",
         color: '#00BCD4',
     },
