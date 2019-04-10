@@ -54,8 +54,8 @@ public class Classify extends ReactContextBaseJavaModule {
             int cnt = 0;
             long startTime = System.currentTimeMillis();
             while (cnt != imgs.length) {
-                // String modelFile = Integer.toString(cnt) + ".pb";
-                this.recognizeImage(imgs[cnt], "1.pb");
+                String modelFile = Integer.toString(cnt) + ".pb";
+                this.recognizeImage(imgs[cnt], modelFile);
                 topArtist.add(this.initResultsView());
                 cnt = cnt + 1;
             }
