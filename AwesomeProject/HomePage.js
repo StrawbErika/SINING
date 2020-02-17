@@ -9,7 +9,6 @@ import {
 } from 'react-native';
 import { Icon } from 'react-native-elements'
 import ImagePicker from "react-native-image-picker";
-import { Thread } from 'react-native-threads';
 import { Actions } from 'react-native-router-flux';
 
 import Classify from './Classify';

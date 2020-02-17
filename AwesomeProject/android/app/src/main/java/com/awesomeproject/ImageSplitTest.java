@@ -12,9 +12,22 @@ public class ImageSplitTest {
 
     public static Bitmap[] split(String fileName) throws IOException {
         Log.d("NOOTCUTE", fileName);
-        Log.d("NOOTCUTE", fileName.split("file://")[1]);
+        Log.d("NOOTCUTE", fileName.split(":")[0]);
+        Log.d("NOOTCUTE", fileName.split(":")[1]);
+        // Log.d("NOOTCUTE", fileName.split("file:///")[1]);
+        // Log.d("NOOTCUTE", fileName.split("content://")[1]);
+        String splitter = "";
+        if(fileName.split(":")[0].equals("file")){
+            splitter = "file:///";
+            Log.d("NOOTCUTE", "fileInside");
+        }else{
+            splitter = "content://";
+            Log.d("NOOTCUTE", "contentInside");
+        }
 
-        Bitmap image = BitmapFactory.decodeFile(fileName.split("file://")[1]);
+        Bitmap image = BitmapFactory.decodeFile(fileName.split(splitter)[1]);
+
+        // Bitmap image = BitmapFactory.decodeFile(fileName.split("file:///")[1]);
 
         int rows = 3; // You should decide the values for rows and cols variables
         int cols = 3;
